@@ -1,4 +1,6 @@
 
+using System.Diagnostics;
+
 namespace WaveMix
 {
     internal static class Program
@@ -10,6 +12,9 @@ namespace WaveMix
         static void Main(string[] args)
         {
             ApplicationConfiguration.Initialize();
+
+            using (Process p = Process.GetCurrentProcess())
+                p.PriorityClass = ProcessPriorityClass.AboveNormal;
 
             Settings? settings = SettingsIO.Read();
             if (settings == null)

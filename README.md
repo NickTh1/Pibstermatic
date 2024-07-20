@@ -30,3 +30,19 @@ Combustion: The rate of the engine, times the number of cylinders, divided by tw
 Cylinder: The rate of the engine times the number of cylinders.
 
 Note that (except for pure sine waves), there will also be peaks at multiples of the base frequency.
+
+C:\Projects\PiBoSo\PibstermaticSetup\Release\PibstermaticSetup.msi
+
+
+https://www.mediafire.com/file/b2x1gocc0j4lqkv/PibstermaticSetup.msi/file
+
+Hello!
+A lot of GP Bikes mods have a pitch mismatch when transitioning between samples. That annoys me, so I decided to try to 
+correct the sounds for a bike. It was a hassle, and the result turned out rather crap anyway.
+So I decided to write a tool to help with that.
+I present to you: Pibstermatic Sound 2000
+Github: https://github.com/NickTh1/Pibstermatic
+Installer: https://www.mediafire.com/file/b2x1gocc0j4lqkv/PibstermaticSetup.msi/file
+
+
+
