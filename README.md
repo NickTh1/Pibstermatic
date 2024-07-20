@@ -23,10 +23,14 @@ command line argument being the full path of the engine file.
 15) Save in the live edit view.
 
 ***Peaks****
+
 Cycle: For four stroke engines, this rate has half the rate of revolution. There should never be a lower visible peak than this, 
 but it can be very weak - especially for 'off' samples.
+
 Revolution:  The rate of the engine.
+
 Combustion: The rate of the engine, times the number of cylinders, divided by two for four stroke engines.
+
 Cylinder: The rate of the engine times the number of cylinders.
 
 Note that (except for pure sine waves), there will also be peaks at multiples of the base frequency.
