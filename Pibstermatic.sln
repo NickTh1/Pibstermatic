@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pibstermatic", "Pibstermatic.csproj", "{DEF7ED42-4E17-401B-9D3F-3786D8E93D64}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "PibstermaticSetup", "..\PibstermaticSetup\PibstermaticSetup.vdproj", "{30036621-638F-4EBD-8058-BB1A5807F53D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,8 @@ Global
 		{DEF7ED42-4E17-401B-9D3F-3786D8E93D64}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DEF7ED42-4E17-401B-9D3F-3786D8E93D64}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DEF7ED42-4E17-401B-9D3F-3786D8E93D64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30036621-638F-4EBD-8058-BB1A5807F53D}.Debug|Any CPU.ActiveCfg = Debug
+		{30036621-638F-4EBD-8058-BB1A5807F53D}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
