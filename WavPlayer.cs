@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 using NAudio.Wave;
 using NAudio.MediaFoundation;
 
@@ -38,6 +39,16 @@ namespace WaveMix
             public float m_Frequency = 44100;
 
             public float m_Position = 0;
+        };
+
+        [StructLayout(LayoutKind.Explicit)]
+        struct SFloatCastToBytes
+        {
+            [FieldOffset(0)] public float m_Float;
+            [FieldOffset(0)] public byte m_Byte0;
+            [FieldOffset(1)] public byte m_Byte1;
+            [FieldOffset(2)] public byte m_Byte2;
+            [FieldOffset(3)] public byte m_Byte3;
         };
 
         private object m_Mutex = new object();
@@ -203,43 +214,40 @@ namespace WaveMix
             {
                 float dt = 1.0f / c_SampleRate;
 
-                unsafe
+                SFloatCastToBytes float_to_bytes = new SFloatCastToBytes();
+
+                int num_floats = count / sizeof(float);
+                int buffer_dst_index = offset;
+                for (int i = 0; i < num_floats; i++)
                 {
-                    int num_floats = count / sizeof(float);
-                    fixed (byte* byte_ptr = buffer)
+                    float v = 0.0f;
+                    for (int j = 0; j < m_ActiveWavs.Count; j++)
                     {
-                        for (int i = 0; i < num_floats; i++)
-                        {
-                            float v = 0.0f;
-                            for (int j = 0; j < m_ActiveWavs.Count; j++)
-                            {
-                                int index = m_ActiveWavs[j];
-                                Wav wav = m_Wavs[index];
-                                WavState wav_state = m_WavStates[index];
+                        int index = m_ActiveWavs[j];
+                        Wav wav = m_Wavs[index];
+                        WavState wav_state = m_WavStates[index];
 
-                                wav_state.m_Position += dt * wav_state.m_Frequency;
-                                while (wav_state.m_Position >= wav.m_Data.Length)
-                                    wav_state.m_Position -= wav.m_Data.Length;
-                                float v_wav = SampleWav(wav, wav_state.m_Position);
-                                v += v_wav * wav_state.m_Amplitude;
-                            }
-                            float scaled_value = v * m_OverallVolume;
-
-                            int dst_index = m_CircularHead++;
-                            m_CircularBuffer[dst_index & c_CircularBufferMask] = scaled_value;
-
-                            float sq_v = scaled_value * scaled_value;
-                            m_MeanSquareSum = m_MeanSquareSum * m_RMSExp + sq_v * (1.0 - m_RMSExp);
-
-                            unsafe
-                            {
-                                float* ptr = (float*)&byte_ptr[offset] + i;
-                                *ptr = scaled_value;
-                            }
-                        }
+                        wav_state.m_Position += dt * wav_state.m_Frequency;
+                        while (wav_state.m_Position >= wav.m_Data.Length)
+                            wav_state.m_Position -= wav.m_Data.Length;
+                        float v_wav = SampleWav(wav, wav_state.m_Position);
+                        v += v_wav * wav_state.m_Amplitude;
                     }
-                    return count;
+                    float scaled_value = v * m_OverallVolume;
+
+                    int dst_index = m_CircularHead++;
+                    m_CircularBuffer[dst_index & c_CircularBufferMask] = scaled_value;
+
+                    float sq_v = scaled_value * scaled_value;
+                    m_MeanSquareSum = m_MeanSquareSum * m_RMSExp + sq_v * (1.0 - m_RMSExp);
+
+                    float_to_bytes.m_Float = scaled_value;
+                    buffer[buffer_dst_index++] = float_to_bytes.m_Byte0;
+                    buffer[buffer_dst_index++] = float_to_bytes.m_Byte1;
+                    buffer[buffer_dst_index++] = float_to_bytes.m_Byte2;
+                    buffer[buffer_dst_index++] = float_to_bytes.m_Byte3;
                 }
+                return count;
             }
         }
     }
