@@ -35,7 +35,9 @@ namespace WaveMix
         public float IdleRPM
         {
             get { return m_IdleRPM; }
-            set { m_IdleRPM = value; }
+            set {
+                m_IdleRPM = Math.Clamp(value, 0, 1e6f);
+            }
         }
 
         public float Gearing

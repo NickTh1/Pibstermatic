@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.buttonLiveEdit = new System.Windows.Forms.Button();
             this.tabControlControl = new System.Windows.Forms.TabControl();
             this.tabPageRaw = new System.Windows.Forms.TabPage();
@@ -39,6 +39,7 @@
             this.textBoxRPM = new System.Windows.Forms.TextBox();
             this.trackBarRPM = new System.Windows.Forms.TrackBar();
             this.tabPageSim = new System.Windows.Forms.TabPage();
+            this.buttonBrake = new System.Windows.Forms.Button();
             this.checkBoxNeutral = new System.Windows.Forms.CheckBox();
             this.textBoxOn = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
@@ -73,7 +74,6 @@
             this.comboBoxCylinders = new System.Windows.Forms.ComboBox();
             this.buttonAutoMinPitchEnable = new System.Windows.Forms.Button();
             this.buttonAutoMinPitchDisable = new System.Windows.Forms.Button();
-            this.buttonBrake = new System.Windows.Forms.Button();
             this.tabControlControl.SuspendLayout();
             this.tabPageRaw.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarOn)).BeginInit();
@@ -197,6 +197,17 @@
             this.tabPageSim.Text = "Sim";
             this.tabPageSim.UseVisualStyleBackColor = true;
             // 
+            // buttonBrake
+            // 
+            this.buttonBrake.Location = new System.Drawing.Point(611, 17);
+            this.buttonBrake.Name = "buttonBrake";
+            this.buttonBrake.Size = new System.Drawing.Size(75, 23);
+            this.buttonBrake.TabIndex = 12;
+            this.buttonBrake.Text = "Brake";
+            this.buttonBrake.UseVisualStyleBackColor = true;
+            this.buttonBrake.MouseDown += new System.Windows.Forms.MouseEventHandler(this.buttonBrake_MouseDown);
+            this.buttonBrake.MouseUp += new System.Windows.Forms.MouseEventHandler(this.buttonBrake_MouseUp);
+            // 
             // checkBoxNeutral
             // 
             this.checkBoxNeutral.AutoSize = true;
@@ -249,6 +260,7 @@
             this.textBoxIdleRPM.Name = "textBoxIdleRPM";
             this.textBoxIdleRPM.Size = new System.Drawing.Size(66, 23);
             this.textBoxIdleRPM.TabIndex = 6;
+            this.textBoxIdleRPM.TextChanged += new System.EventHandler(this.textBoxIdleRPM_TextChanged);
             // 
             // label10
             // 
@@ -406,8 +418,8 @@
             // 
             // columnRecommendedMinPitch
             // 
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.columnRecommendedMinPitch.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.columnRecommendedMinPitch.DefaultCellStyle = dataGridViewCellStyle1;
             this.columnRecommendedMinPitch.HeaderText = "Recommended MinPitch";
             this.columnRecommendedMinPitch.Name = "columnRecommendedMinPitch";
             this.columnRecommendedMinPitch.ReadOnly = true;
@@ -550,17 +562,6 @@
             this.buttonAutoMinPitchDisable.Text = "Auto MinPitch None";
             this.buttonAutoMinPitchDisable.UseVisualStyleBackColor = true;
             this.buttonAutoMinPitchDisable.Click += new System.EventHandler(this.buttonAutoMinPitchDisable_Click);
-            // 
-            // buttonBrake
-            // 
-            this.buttonBrake.Location = new System.Drawing.Point(611, 17);
-            this.buttonBrake.Name = "buttonBrake";
-            this.buttonBrake.Size = new System.Drawing.Size(75, 23);
-            this.buttonBrake.TabIndex = 12;
-            this.buttonBrake.Text = "Brake";
-            this.buttonBrake.UseVisualStyleBackColor = true;
-            this.buttonBrake.MouseDown += new System.Windows.Forms.MouseEventHandler(this.buttonBrake_MouseDown);
-            this.buttonBrake.MouseUp += new System.Windows.Forms.MouseEventHandler(this.buttonBrake_MouseUp);
             // 
             // MainForm
             // 

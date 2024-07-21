@@ -144,6 +144,12 @@ namespace WaveMix
         public void SetWavPlayback(int handle, float amplitude, float pitch)
         {
             Wav wav = m_Wavs[handle];
+            if (pitch <= 0 || pitch > 1000.0f)
+            {
+                amplitude = 0.0f;
+                pitch = 1.0f;
+            }
+
             WavState wav_state = m_WavStates[handle];
             wav_state.m_Amplitude = amplitude;
             wav_state.m_Frequency = pitch * wav.m_SampleRate;

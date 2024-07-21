@@ -98,7 +98,7 @@ namespace WaveMix
             UpdateStrokeCylinders();
             m_EngineSim.IdleRPM = settings.IdleRPM;
 
-            SetRawRPM(1000.0f);
+            SetRawRPM(settings.IdleRPM);
 
             UpdateRaw();
             UpdateOverallVolume();
@@ -746,6 +746,7 @@ namespace WaveMix
             m_Settings.Stroke = m_Stroke;
             m_Settings.Cylinders = m_Cylinders;
             m_Settings.OverallVolume = m_EnginePlayer.WavPlayer.OverallVolume;
+            m_Settings.IdleRPM = m_EngineSim.IdleRPM;
 
             SettingsIO.Write(m_Settings);
         }
@@ -805,6 +806,18 @@ namespace WaveMix
         private void buttonBrake_MouseUp(object sender, MouseEventArgs e)
         {
             m_EngineSim.Brake = 0.0f;
+        }
+
+        private void textBoxIdleRPM_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                float idle_rpm = (float)Convert.ToDouble(textBoxIdleRPM.Text);
+                m_EngineSim.IdleRPM = idle_rpm;
+                WriteSettings();
+            } catch(Exception)
+            {
+            }
         }
     }
 }
