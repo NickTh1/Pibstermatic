@@ -84,7 +84,6 @@ namespace WaveMix
         {
             if (normed_rpm > 1.0f)
                 return 0;
-            //return 0.1f + normed_rpm - normed_rpm * normed_rpm * 0.5f;
             return 0.5f + normed_rpm * 0.5f - normed_rpm * normed_rpm * 0.25f;
         }
 
