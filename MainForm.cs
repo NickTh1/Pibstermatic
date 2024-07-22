@@ -361,10 +361,16 @@ namespace WaveMix
             }
         }
 
+        void SetSimRPM(float rpm)
+        {
+            m_EngineSim.CurrentRPM = rpm;
+        }
+
         void SetRawRPM(float rpm)
         {
             TrackBarRPM = rpm;
             SetTextBoxRPM(rpm);
+            SetSimRPM(rpm);
         }
 
         float TrackBarRPM
@@ -477,7 +483,6 @@ namespace WaveMix
                 textBoxRPM.Text = rpm_str;
             }
             textBoxCurrentRPM.Text = rpm_str;
-            m_EngineSim.CurrentRPM = rpm;
         }
 
         private void trackBarRPM_Scroll(object sender, EventArgs e)

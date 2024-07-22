@@ -8,8 +8,24 @@ namespace WaveMix
 {
     internal class EngineSim
     {
+        enum EState
+        {
+            Crankshaft,
+            // Note: RPMs for Wheel is at the crankshaft as if it were not in neutral - even if it is.
+            Wheel,
+        }
+
+        enum ERPMUpdateType
+        {
+            // Engine RPM, in neutral
+            Crankshaft = 1 << (int)EState.Crankshaft,
+            // Engine RPM as if it's not in neutral - but it is.
+            Wheel = 1 << (int)EState.Wheel,
+            Both = Crankshaft | Wheel,
+        };
+
         static readonly float c_NormedMass = 100.0f;
-        static readonly float c_NormedMassNeutral = 4.0f;
+        static readonly float c_NormedMassNeutral = 10.0f;
         static readonly float c_WindDrag = 0.04f;
         static readonly float c_EngineDrag = 0.2f;
         static readonly float c_TorqueBrake = 1.0f;
@@ -51,7 +67,7 @@ namespace WaveMix
         public float CurrentRPM
         {
             get {
-                return Neutral ? m_RPM : (m_Speed * MaxRPM / GearRatio);
+                return GetCurrentRPM(EState.Crankshaft);
             }
             set 
             { 
@@ -80,6 +96,11 @@ namespace WaveMix
             set { m_Neutral = value; }
         }
 
+        float GetCurrentRPM(EState state)
+        {
+            return (state == EState.Crankshaft) ? m_RPM : (m_Speed * MaxRPM / GearRatio);
+        }
+
         static float EvaluateTorque(float normed_rpm)
         {
             if (normed_rpm > 1.0f)
@@ -87,9 +108,20 @@ namespace WaveMix
             return 0.5f + normed_rpm * 0.5f - normed_rpm * normed_rpm * 0.25f;
         }
 
-        internal SEngineState Update(float dt, float throttle)
+        struct SRPMUpdate
         {
-            float curr_rpm = CurrentRPM;
+            public float m_RPM;
+            public float m_On;
+            public SRPMUpdate(float rpm, float on)
+            {
+                m_RPM = rpm;
+                m_On = on;
+            }
+        }
+
+        SRPMUpdate UpdateRPM(float dt, float throttle, ERPMUpdateType update_type)
+        {
+            float curr_rpm = GetCurrentRPM((update_type == ERPMUpdateType.Crankshaft) ? EState.Crankshaft : EState.Wheel);
             float normed_rpm = curr_rpm / MaxRPM;
 
             // Calculate set point for idle
@@ -104,29 +136,38 @@ namespace WaveMix
             float torque_engine_max = EvaluateTorque(normed_rpm);
             float torque_engine = Math.Max(delta_normed_rpm * torque_engine_max, 0);
 
-            bool neutral = Neutral;
-            float gear_ratio = neutral ? 0 : GearRatio;
+            float gear_ratio = (update_type == ERPMUpdateType.Crankshaft) ? 0 : GearRatio;
             float speed = normed_rpm * gear_ratio;
             float torque_wind_drag = speed * speed * c_WindDrag;
-            float torque_engine_drag = normed_rpm * c_EngineDrag;
-            float torque_brake = neutral ? 0 : (m_Brake * c_TorqueBrake);
+            float torque_engine_drag = (update_type == ERPMUpdateType.Wheel) ? 0 : (normed_rpm * c_EngineDrag);
+            float torque_brake = (update_type == ERPMUpdateType.Crankshaft) ? 0 : (m_Brake * c_TorqueBrake);
 
             float torque_total = torque_engine - torque_wind_drag - torque_engine_drag - torque_brake;
 
-            float normed_mass = neutral ? c_NormedMassNeutral : (c_NormedMass * gear_ratio);
+            float normed_mass = (update_type == ERPMUpdateType.Crankshaft) ? c_NormedMassNeutral : (c_NormedMass * gear_ratio);
 
             float a = 60.0f * torque_total / normed_mass;       // 60: Forgot to include dt when I tuned the constants :-) .
 
             float new_rpm = Math.Clamp(curr_rpm + a * MaxRPM * dt, 0, MaxRPM);
-            if (neutral)
-                m_RPM = new_rpm;
+            float on = Math.Clamp(delta_normed_rpm, 0, 1);
+
+            return new SRPMUpdate(new_rpm, on);
+        }
+
+        internal SEngineState Update(float dt, float throttle)
+        {
+            SRPMUpdate rpm_update = UpdateRPM(dt, throttle, Neutral ? ERPMUpdateType.Crankshaft : ERPMUpdateType.Both);
+            m_RPM = rpm_update.m_RPM;
+
+            if (Neutral)
+                m_Speed = (UpdateRPM(dt, 0, ERPMUpdateType.Wheel).m_RPM / MaxRPM) * GearRatio;
             else
-                m_Speed = (new_rpm / MaxRPM) * GearRatio;
+                m_Speed= (m_RPM / MaxRPM) * GearRatio;
 
             SEngineState state;
             state.m_RPM = m_RPM;
 
-            state.m_On = Math.Clamp(delta_normed_rpm, 0, 1);
+            state.m_On = rpm_update.m_On;
             state.m_Off = 1.0f - state.m_On;
             return state;
         }
