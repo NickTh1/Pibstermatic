@@ -134,7 +134,7 @@ namespace WaveMix
             float delta_normed_rpm = Math.Max(normed_rpm_set - normed_rpm, 0);
 
             float torque_engine_max = EvaluateTorque(normed_rpm);
-            float torque_engine = Math.Max(delta_normed_rpm * torque_engine_max, 0);
+            float torque_engine = (update_type == ERPMUpdateType.Wheel) ? 0 : Math.Max(delta_normed_rpm * torque_engine_max, 0);
 
             float gear_ratio = (update_type == ERPMUpdateType.Crankshaft) ? 0 : GearRatio;
             float speed = normed_rpm * gear_ratio;
