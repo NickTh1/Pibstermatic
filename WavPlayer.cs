@@ -38,7 +38,7 @@ namespace WaveMix
             public float m_Amplitude = 0;
             public float m_Frequency = 44100;
 
-            public float m_Position = 0;
+            public double m_Position = 0;
         };
 
         [StructLayout(LayoutKind.Explicit)]
@@ -230,7 +230,7 @@ namespace WaveMix
                         wav_state.m_Position += dt * wav_state.m_Frequency;
                         while (wav_state.m_Position >= wav.m_Data.Length)
                             wav_state.m_Position -= wav.m_Data.Length;
-                        float v_wav = SampleWav(wav, wav_state.m_Position);
+                        float v_wav = SampleWav(wav, (float)wav_state.m_Position);
                         v += v_wav * wav_state.m_Amplitude;
                     }
                     float scaled_value = v * m_OverallVolume;

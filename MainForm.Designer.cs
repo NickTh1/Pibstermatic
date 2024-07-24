@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.buttonLiveEdit = new System.Windows.Forms.Button();
             this.tabControlControl = new System.Windows.Forms.TabControl();
             this.tabPageRaw = new System.Windows.Forms.TabPage();
@@ -40,7 +40,7 @@
             this.trackBarRPM = new System.Windows.Forms.TrackBar();
             this.tabPageSim = new System.Windows.Forms.TabPage();
             this.buttonBrake = new System.Windows.Forms.Button();
-            this.checkBoxNeutral = new System.Windows.Forms.CheckBox();
+            this.checkBoxClutch = new System.Windows.Forms.CheckBox();
             this.textBoxOn = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.textBoxCurrentRPM = new System.Windows.Forms.TextBox();
@@ -177,7 +177,7 @@
             // tabPageSim
             // 
             this.tabPageSim.Controls.Add(this.buttonBrake);
-            this.tabPageSim.Controls.Add(this.checkBoxNeutral);
+            this.tabPageSim.Controls.Add(this.checkBoxClutch);
             this.tabPageSim.Controls.Add(this.textBoxOn);
             this.tabPageSim.Controls.Add(this.label12);
             this.tabPageSim.Controls.Add(this.textBoxCurrentRPM);
@@ -208,16 +208,16 @@
             this.buttonBrake.MouseDown += new System.Windows.Forms.MouseEventHandler(this.buttonBrake_MouseDown);
             this.buttonBrake.MouseUp += new System.Windows.Forms.MouseEventHandler(this.buttonBrake_MouseUp);
             // 
-            // checkBoxNeutral
+            // checkBoxClutch
             // 
-            this.checkBoxNeutral.AutoSize = true;
-            this.checkBoxNeutral.Location = new System.Drawing.Point(540, 21);
-            this.checkBoxNeutral.Name = "checkBoxNeutral";
-            this.checkBoxNeutral.Size = new System.Drawing.Size(65, 19);
-            this.checkBoxNeutral.TabIndex = 11;
-            this.checkBoxNeutral.Text = "Neutral";
-            this.checkBoxNeutral.UseVisualStyleBackColor = true;
-            this.checkBoxNeutral.CheckedChanged += new System.EventHandler(this.checkBoxNeutral_CheckedChanged);
+            this.checkBoxClutch.AutoSize = true;
+            this.checkBoxClutch.Location = new System.Drawing.Point(540, 21);
+            this.checkBoxClutch.Name = "checkBoxClutch";
+            this.checkBoxClutch.Size = new System.Drawing.Size(61, 19);
+            this.checkBoxClutch.TabIndex = 11;
+            this.checkBoxClutch.Text = "Clutch";
+            this.checkBoxClutch.UseVisualStyleBackColor = true;
+            this.checkBoxClutch.CheckedChanged += new System.EventHandler(this.checkBoxClutch_CheckedChanged);
             // 
             // textBoxOn
             // 
@@ -418,8 +418,8 @@
             // 
             // columnRecommendedMinPitch
             // 
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.columnRecommendedMinPitch.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.columnRecommendedMinPitch.DefaultCellStyle = dataGridViewCellStyle3;
             this.columnRecommendedMinPitch.HeaderText = "Recommended MinPitch";
             this.columnRecommendedMinPitch.Name = "columnRecommendedMinPitch";
             this.columnRecommendedMinPitch.ReadOnly = true;
@@ -646,7 +646,7 @@
         private Label label11;
         private TextBox textBoxOn;
         private Label label12;
-        private CheckBox checkBoxNeutral;
+        private CheckBox checkBoxClutch;
         private Button buttonBrake;
     }
 }

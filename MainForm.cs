@@ -798,9 +798,9 @@ namespace WaveMix
             m_EngineSim.Gearing = gearing;
         }
 
-        private void checkBoxNeutral_CheckedChanged(object sender, EventArgs e)
+        private void checkBoxClutch_CheckedChanged(object sender, EventArgs e)
         {
-            m_EngineSim.Neutral = checkBoxNeutral.Checked;
+            m_EngineSim.Neutral = checkBoxClutch.Checked;
         }
 
         private void buttonBrake_MouseDown(object sender, MouseEventArgs e)
