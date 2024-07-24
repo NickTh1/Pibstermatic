@@ -202,6 +202,8 @@ namespace WaveMix
             float floor_pos = (float)Math.Floor(position);
             float residual = position - floor_pos;
             int index = (int)floor_pos;
+            if (index >= wav.m_Data.Length)
+                index -= wav.m_Data.Length;
             float v_from = wav.m_Data[index];
             float v_to = wav.m_Data[index + 1 < wav.m_Data.Length ? index + 1 : 0];
 
