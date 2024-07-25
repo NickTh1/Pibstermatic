@@ -33,6 +33,14 @@ namespace WaveMix
             public int m_NumUnchecked = 0;
         }
 
+        class GridSampleModel
+        {
+            public bool m_Enabled = true;
+            public bool m_ExtendedRange = false;
+            public bool m_AutoMinPitch = false;
+            public bool m_CanAutoMinPitch = true;
+        }
+
         EnginePlayer m_EnginePlayer = new EnginePlayer();
         EngineSim m_EngineSim = new EngineSim();
         Settings m_Settings = new Settings();
@@ -57,6 +65,8 @@ namespace WaveMix
 
         Stopwatch m_TimerStopwatch = new Stopwatch();
         double m_ElapsedLast = 0;
+
+        Dictionary<Tuple<int, string>, GridSampleModel> m_SampleModels = new Dictionary<Tuple<int, string>, GridSampleModel>();
 
         FileSystemWatcher m_EngineFileWatcher;
 
@@ -270,6 +280,18 @@ namespace WaveMix
             return (sample.m_Type == ESampleType.Off || sample.m_Type == ESampleType.On);
         }
 
+        GridSampleModel GetSampleModel(EnginePlayer.Sample sample)
+        {
+            Tuple<int, string> key = new Tuple<int, string>(sample.m_IndexLayer, sample.m_WavName);
+
+            GridSampleModel? model = null;
+            if (m_SampleModels.TryGetValue(key, out model))
+                return model;
+            model = new GridSampleModel();
+            m_SampleModels.Add(key, model);
+            return model;
+        }
+
         void UpdateGridRows()
         {
             DataGridViewRowCollection rows = dataGridViewWavs.Rows;
@@ -283,46 +305,55 @@ namespace WaveMix
             Color col_ok = Color.FromArgb(0xff, 0xe0, 0xff, 0xe0);
             Color col_not_ok = Color.FromArgb(0xff, 0xff, 0xe0, 0xe0);
 
-            for (int i = 0; i < num_samples; i++)
+            using (Modifying modifying = Modify())
             {
-                EnginePlayer.Sample sample = m_EnginePlayer.GetSample(i);
-                DataGridViewCellCollection cells = rows[i].Cells;
-                cells[(int)EColumnIndex.WavName].Value = sample.m_WavName;
-
-                if (cells[(int)EColumnIndex.Enabled].Value == null)
-                    cells[(int)EColumnIndex.Enabled].Value = true;
-
-                bool can_auto_pitch_min = CanAutoPitchMin(sample);
-
-                DataGridViewCheckBoxCell? chk_auto_min_pitch = cells[(int)EColumnIndex.AutoMinPitch] as DataGridViewCheckBoxCell;
-                if (chk_auto_min_pitch != null)
+                for (int i = 0; i < num_samples; i++)
                 {
-                    DataGridViewColumn column_auto_min_pitch = columns[(int)EColumnIndex.AutoMinPitch];
-                    chk_auto_min_pitch.ReadOnly = !can_auto_pitch_min;
-                    chk_auto_min_pitch.FlatStyle = can_auto_pitch_min ? FlatStyle.Standard : FlatStyle.Flat;
-                    chk_auto_min_pitch.Style.ForeColor = can_auto_pitch_min ? column_auto_min_pitch.DefaultCellStyle.ForeColor : Color.White;
-                }
+                    EnginePlayer.Sample sample = m_EnginePlayer.GetSample(i);
+                    GridSampleModel sample_model = GetSampleModel(sample);
 
-                string recommended_min_pitch_str = "";
-                if (can_auto_pitch_min)
-                {
-                    float min_value = sample.m_Points[0].m_Value;
-                    float max_value = sample.m_Points[sample.m_Points.Length - 1].m_Value;
-                    float recommended_min_pitch = sample.m_MaxPitch * min_value / max_value;
-                    recommended_min_pitch_str = recommended_min_pitch.ToString("0.0000", CultureInfo.InvariantCulture);
+                    DataGridViewCellCollection cells = rows[i].Cells;
+                    cells[(int)EColumnIndex.WavName].Value = sample.m_WavName;
 
-                    bool is_ok = Math.Abs(recommended_min_pitch - sample.m_MinPitch) < 0.02f;
-                    cells[(int)EColumnIndex.RecommendedMinPitch].Style.BackColor = is_ok ? col_ok : col_not_ok;
+                    cells[(int)EColumnIndex.Enabled].Value = sample_model.m_Enabled;
+                    cells[(int)EColumnIndex.AutoMinPitch].Value = sample_model.m_AutoMinPitch;
+                    cells[(int)EColumnIndex.ExtendedRange].Value = sample_model.m_ExtendedRange;
+
+                    bool can_auto_pitch_min = CanAutoPitchMin(sample);
+                    sample_model.m_CanAutoMinPitch = can_auto_pitch_min;
+
+                    DataGridViewCheckBoxCell? chk_auto_min_pitch = cells[(int)EColumnIndex.AutoMinPitch] as DataGridViewCheckBoxCell;
+                    if (chk_auto_min_pitch != null)     // Warning
+                    {
+                        DataGridViewColumn column_auto_min_pitch = columns[(int)EColumnIndex.AutoMinPitch];
+                        chk_auto_min_pitch.ReadOnly = !can_auto_pitch_min;
+                        chk_auto_min_pitch.FlatStyle = can_auto_pitch_min ? FlatStyle.Standard : FlatStyle.Flat;
+                        chk_auto_min_pitch.Style.ForeColor = can_auto_pitch_min ? column_auto_min_pitch.DefaultCellStyle.ForeColor : Color.White;
+                    }
+
+                    string recommended_min_pitch_str = "";
+                    if (can_auto_pitch_min)
+                    {
+                        float min_value = sample.m_Points[0].m_Value;
+                        float max_value = sample.m_Points[sample.m_Points.Length - 1].m_Value;
+                        float recommended_min_pitch = sample.m_MaxPitch * min_value / max_value;
+                        recommended_min_pitch_str = recommended_min_pitch.ToString("0.0000", CultureInfo.InvariantCulture);
+
+                        bool is_ok = Math.Abs(recommended_min_pitch - sample.m_MinPitch) < 0.02f;
+                        cells[(int)EColumnIndex.RecommendedMinPitch].Style.BackColor = is_ok ? col_ok : col_not_ok;
+                    }
+                    else
+                    {
+                        DataGridViewColumn column_min_pitch = columns[(int)EColumnIndex.RecommendedMinPitch];
+                        cells[(int)EColumnIndex.RecommendedMinPitch].Style.BackColor = column_min_pitch.DefaultCellStyle.BackColor;
+                    }
+                    cells[(int)EColumnIndex.RecommendedMinPitch].Value = recommended_min_pitch_str;
                 }
-                else
-                {
-                    DataGridViewColumn column_min_pitch = columns[(int)EColumnIndex.RecommendedMinPitch];
-                    cells[(int)EColumnIndex.RecommendedMinPitch].Style.BackColor = column_min_pitch.DefaultCellStyle.BackColor;
-                }
-                cells[(int)EColumnIndex.RecommendedMinPitch].Value = recommended_min_pitch_str;
             }
 
+            UpdateFromGrid();
             UpdateButtons();
+            UpdateEngineState();
         }
 
         void UpdateGridState()
@@ -657,6 +688,11 @@ namespace WaveMix
             bool enabled = CellValueToBool(cells[(int)EColumnIndex.Enabled].Value);
             bool extend_range = CellValueToBool(cells[(int)EColumnIndex.ExtendedRange].Value);
             bool auto_min_pitch = CellValueToBool(cells[(int)EColumnIndex.AutoMinPitch].Value);
+
+            GridSampleModel sample_model = GetSampleModel(sample);
+            sample_model.m_Enabled = enabled;
+            sample_model.m_ExtendedRange = extend_range;
+            sample_model.m_AutoMinPitch = auto_min_pitch;
 
             SSampleState sample_state = new SSampleState();
             sample_state.m_Enabled = enabled || extend_range;

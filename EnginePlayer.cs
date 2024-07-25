@@ -79,7 +79,7 @@ namespace WaveMix
 
         public EnginePlayer()
         {
-            m_WaveOut.DesiredLatency = 60;
+            m_WaveOut.DesiredLatency = 100;//60;
             m_WaveOut.Init(m_WavPlayer);
         }
 
