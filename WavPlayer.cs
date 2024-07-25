@@ -28,6 +28,7 @@ namespace WaveMix
         private class Wav
         {
             public string m_Path = "";
+            public int m_IndexLayer = 0;
             public float m_SampleRate = 44100;
 
             public float[] m_Data = new float[1];
@@ -107,11 +108,12 @@ namespace WaveMix
             }
         }
 
-        public int AddWav(string filepath)
+        public int AddWav(int index_layer, string filepath)
         {
             for(int i = 0; i < m_Wavs.Count; i++)
             {
-                if (m_Wavs[i].m_Path.Equals(filepath))
+                Wav wav = m_Wavs[i];
+                if (wav.m_IndexLayer == index_layer && wav.m_Path.Equals(filepath))
                     return i;
             }
 
@@ -137,6 +139,7 @@ namespace WaveMix
                     WavState wav_state = new WavState();
 
                     wav.m_Path = filepath;
+                    wav.m_IndexLayer = index_layer;
                     wav.m_SampleRate = sample_rate;
                     wav.m_Data = all_data.ToArray();
 

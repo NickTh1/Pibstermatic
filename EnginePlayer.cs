@@ -208,7 +208,7 @@ namespace WaveMix
                         sample.m_MaxPitch = src_sample.GetFloat("MaxPitch");
 
                         string path = Path.Combine(m_Folder, wav_name);
-                        sample.m_HandleWav = m_WavPlayer.AddWav(path);
+                        sample.m_HandleWav = m_WavPlayer.AddWav(index_layer, path);
 
                         int num_points = src_sample.GetInteger("NumPoints");
                         if (num_points < 2)
