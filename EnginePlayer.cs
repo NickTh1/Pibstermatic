@@ -357,6 +357,7 @@ namespace WaveMix
                 ref SWavSetting wav_setting = ref wav_settings[i];
                 m_WavPlayer.SetWavPlayback(i, wav_setting.m_Volume, wav_setting.m_Pitch);
             }
+            m_WavPlayer.CommitScape();
         }
     }
 }

@@ -34,13 +34,28 @@ namespace WaveMix
             public float[] m_Data = new float[1];
         };
 
-        private class WavState
+        private struct SWavPlaybackParams
         {
             public float m_Amplitude = 0;
             public float m_Frequency = 44100;
+        }
 
+        private struct SScape
+        {
+            public SWavPlaybackParams[] m_WavPlaybackParams = new SWavPlaybackParams[0];
+        }
+
+        private class WavState
+        {
             public double m_Position = 0;
-        };
+        }
+
+        private class InterpolatedWav
+        {
+            public SWavPlaybackParams m_From;
+            public SWavPlaybackParams m_To;
+            public int m_Index;
+        }
 
         [StructLayout(LayoutKind.Explicit)]
         struct SFloatCastToBytes
@@ -54,8 +69,10 @@ namespace WaveMix
 
         private object m_Mutex = new object();
         List<Wav> m_Wavs = new List<Wav>();
+        SScape m_PendingScape = new SScape();
+        List<SScape> m_QueuedScapes = new List<SScape>();
         List<WavState> m_WavStates = new List<WavState>();
-        List<int> m_ActiveWavs = new List<int>();
+        List<InterpolatedWav> m_TmpInterpolatedWavs = new List<InterpolatedWav>();
         float[] m_CircularBuffer = new float[c_CircularBufferSize];
         int m_CircularHead = 0;
         float m_OverallVolume = 1.0f;
@@ -95,19 +112,6 @@ namespace WaveMix
             return (float)Math.Sqrt(m_MeanSquareSum);
         }
 
-        private void UpdateActiveWavs()
-        {
-            lock (m_Mutex)
-            {
-                m_ActiveWavs.Clear();
-                for (int i = 0; i < m_Wavs.Count; i++)
-                {
-                    if (m_WavStates[i].m_Amplitude > 0)
-                        m_ActiveWavs.Add(i);
-                }
-            }
-        }
-
         public int AddWav(int index_layer, string filepath)
         {
             for(int i = 0; i < m_Wavs.Count; i++)
@@ -137,21 +141,31 @@ namespace WaveMix
                 {
                     Wav wav = new Wav();
                     WavState wav_state = new WavState();
+                    SWavPlaybackParams wav_playback_params = new SWavPlaybackParams();
+                    wav_state.m_Position = 0;
 
                     wav.m_Path = filepath;
                     wav.m_IndexLayer = index_layer;
                     wav.m_SampleRate = sample_rate;
                     wav.m_Data = all_data.ToArray();
 
-                    wav_state.m_Amplitude = 0;
-                    wav_state.m_Frequency = sample_rate;
+                    wav_playback_params.m_Amplitude = 0;
+                    wav_playback_params.m_Frequency = sample_rate;
 
                     index = m_Wavs.Count;
                     m_Wavs.Add(wav);
                     m_WavStates.Add(wav_state);
+
+                    SWavPlaybackParams[] new_params = new SWavPlaybackParams[index + 1];
+                    Array.Copy(m_PendingScape.m_WavPlaybackParams, new_params, m_PendingScape.m_WavPlaybackParams.Length);
+                    new_params[index] = wav_playback_params;
+                    m_PendingScape.m_WavPlaybackParams = new_params;
+
+                    m_TmpInterpolatedWavs.Add(new InterpolatedWav());
+
+                    m_QueuedScapes.Clear();       // Wrong size, so just clear.
                 }
             }
-            UpdateActiveWavs();
             return index;
         }
 
@@ -164,15 +178,26 @@ namespace WaveMix
                 pitch = 1.0f;
             }
 
-            WavState wav_state = m_WavStates[handle];
-            wav_state.m_Amplitude = amplitude;
-            wav_state.m_Frequency = pitch * wav.m_SampleRate;
-            UpdateActiveWavs();
+            ref SWavPlaybackParams playback_params = ref m_PendingScape.m_WavPlaybackParams[handle];
+            playback_params.m_Amplitude = amplitude;
+            playback_params.m_Frequency = pitch * wav.m_SampleRate;
+        }
+
+        public void CommitScape()
+        {
+            SScape scape_copy = new SScape();
+            scape_copy.m_WavPlaybackParams = new SWavPlaybackParams[m_PendingScape.m_WavPlaybackParams.Length];
+            Array.Copy(m_PendingScape.m_WavPlaybackParams, scape_copy.m_WavPlaybackParams, m_PendingScape.m_WavPlaybackParams.Length);
+
+            lock (m_Mutex)
+            {
+                m_QueuedScapes.Add(scape_copy);
+            }
         }
 
         public float GetWavPlaybackAmplitude(int handle)
         {
-            return m_WavStates[handle].m_Amplitude;
+            return m_PendingScape.m_WavPlaybackParams[handle].m_Amplitude;
         }
 
         public WaveFormat WaveFormat 
@@ -213,6 +238,11 @@ namespace WaveMix
             return v_from + residual * (v_to - v_from);
         }
 
+        static float Lerp(float t, float op1, float op2)
+        {
+            return op2 * t + op1 * (1.0f - t);
+        }
+
         public int Read(byte[] buffer, int offset, int count)
         {
             lock (m_Mutex)
@@ -223,34 +253,83 @@ namespace WaveMix
 
                 int num_floats = count / sizeof(float);
                 int buffer_dst_index = offset;
-                for (int i = 0; i < num_floats; i++)
+                int num_remaining_floats = num_floats;
+
+                int num_queued = m_QueuedScapes.Count;
+                int num_frames = Math.Max(num_queued, 1);
+
+                for (int i = 0; i < num_frames; i++)
                 {
-                    float v = 0.0f;
-                    for (int j = 0; j < m_ActiveWavs.Count; j++)
+                    int num_remaining_frames = num_frames - i;
+                    int num_samples_this_frame = num_remaining_floats / num_remaining_frames;
+
+                    SScape from = (num_queued > 0) ? m_QueuedScapes[Math.Min(i, num_queued - 1)] : m_PendingScape;
+                    SScape to = (num_queued > 0) ? m_QueuedScapes[Math.Min(i + 1, num_queued-1)] : m_PendingScape;
+
+                    int num_active_wavs = 0;
+                    List<InterpolatedWav> interpolated_wavs = m_TmpInterpolatedWavs;
+                    for( int j = 0; j < from.m_WavPlaybackParams.Length; j++)
                     {
-                        int index = m_ActiveWavs[j];
-                        Wav wav = m_Wavs[index];
-                        WavState wav_state = m_WavStates[index];
+                        SWavPlaybackParams wav_from = from.m_WavPlaybackParams[j];
+                        SWavPlaybackParams wav_to = to.m_WavPlaybackParams[j];
 
-                        wav_state.m_Position += dt * wav_state.m_Frequency;
-                        while (wav_state.m_Position >= wav.m_Data.Length)
-                            wav_state.m_Position -= wav.m_Data.Length;
-                        float v_wav = SampleWav(wav, (float)wav_state.m_Position);
-                        v += v_wav * wav_state.m_Amplitude;
+                        if (wav_from.m_Amplitude > 0 || wav_to.m_Amplitude > 0)
+                        {
+                            InterpolatedWav interpolated_wav = interpolated_wavs[num_active_wavs++];
+                            interpolated_wav.m_From = wav_from;
+                            interpolated_wav.m_To = wav_to;
+                            interpolated_wav.m_Index = j;
+                            if (interpolated_wav.m_From.m_Amplitude <= 0)
+                                interpolated_wav.m_From.m_Frequency = interpolated_wav.m_To.m_Frequency;
+                            if (interpolated_wav.m_To.m_Amplitude <= 0)
+                                interpolated_wav.m_To.m_Frequency = interpolated_wav.m_From.m_Frequency;
+                        }
                     }
-                    float scaled_value = v * m_OverallVolume;
 
-                    int dst_index = m_CircularHead++;
-                    m_CircularBuffer[dst_index & c_CircularBufferMask] = scaled_value;
+                    float oo_num_samples_this_frame = 1.0f / num_samples_this_frame;
+                    for( int j = 0; j < num_samples_this_frame; j++)
+                    {
+                        float lerp = (float)j * oo_num_samples_this_frame;
 
-                    float sq_v = scaled_value * scaled_value;
-                    m_MeanSquareSum = m_MeanSquareSum * m_RMSExp + sq_v * (1.0 - m_RMSExp);
+                        float v = 0.0f;
+                        for (int k = 0; k < num_active_wavs; k++)
+                        {
+                            InterpolatedWav interpolated_wav = interpolated_wavs[k];
+                            int index = interpolated_wav.m_Index;
+                            Wav wav = m_Wavs[index];
+                            WavState wav_state = m_WavStates[index];
+                            float frequency = Lerp(lerp, interpolated_wav.m_From.m_Frequency, interpolated_wav.m_To.m_Frequency);
+                            float amplitude = Lerp(lerp, interpolated_wav.m_From.m_Amplitude, interpolated_wav.m_To.m_Amplitude);
 
-                    float_to_bytes.m_Float = scaled_value;
-                    buffer[buffer_dst_index++] = float_to_bytes.m_Byte0;
-                    buffer[buffer_dst_index++] = float_to_bytes.m_Byte1;
-                    buffer[buffer_dst_index++] = float_to_bytes.m_Byte2;
-                    buffer[buffer_dst_index++] = float_to_bytes.m_Byte3;
+                            wav_state.m_Position += dt * frequency;
+                            while (wav_state.m_Position >= wav.m_Data.Length)
+                                wav_state.m_Position -= wav.m_Data.Length;
+                            float v_wav = SampleWav(wav, (float)wav_state.m_Position);
+                            v += v_wav * amplitude;
+                        }
+                        float scaled_value = v * m_OverallVolume;
+
+                        int dst_index = m_CircularHead++;
+                        m_CircularBuffer[dst_index & c_CircularBufferMask] = scaled_value;
+
+                        float sq_v = scaled_value * scaled_value;
+                        m_MeanSquareSum = m_MeanSquareSum * m_RMSExp + sq_v * (1.0 - m_RMSExp);
+
+                        float_to_bytes.m_Float = scaled_value;
+                        buffer[buffer_dst_index++] = float_to_bytes.m_Byte0;
+                        buffer[buffer_dst_index++] = float_to_bytes.m_Byte1;
+                        buffer[buffer_dst_index++] = float_to_bytes.m_Byte2;
+                        buffer[buffer_dst_index++] = float_to_bytes.m_Byte3;
+                    }
+
+                    num_remaining_floats -= num_samples_this_frame;
+                    num_remaining_frames--;
+                }
+
+                if (num_queued > 1)
+                {
+                    m_QueuedScapes[0] = m_QueuedScapes[num_queued - 1];
+                    m_QueuedScapes.RemoveRange(1, num_queued - 1);
                 }
                 return count;
             }

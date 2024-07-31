@@ -29,12 +29,15 @@ namespace WaveMix
         static readonly float c_WindDrag = 0.04f;
         static readonly float c_EngineDrag = 0.2f;
         static readonly float c_TorqueBrake = 1.0f;
+        static readonly float c_RevLimiterOffTau = 0.1f;
+        static readonly float c_NormedRPMFromThrottle = 3.0f;
 
         float m_IdleRPM = 1000;
         float m_MaxRPM = 15000;
 
         float m_RPM = 1000;
         float m_Speed = 0;
+        float m_RevLimiter = 0;
         float m_Gearing = 0;
         float m_Brake = 0;
         bool m_Neutral = false;
@@ -129,7 +132,8 @@ namespace WaveMix
             float normed_rpm_idle_want = IdleRPM / MaxRPM;
             float normed_rpm_idle_set = normed_rpm_idle_want * (c_EngineDrag + torque_at_idle) / torque_at_idle;
 
-            float normed_rpm_set = Math.Max(throttle * 3, normed_rpm_idle_set);
+            float normed_rpm_set = Math.Max(throttle * c_NormedRPMFromThrottle, normed_rpm_idle_set);
+            normed_rpm_set = Math.Min(normed_rpm_set, c_NormedRPMFromThrottle * (1.0f - m_RevLimiter));
 
             float delta_normed_rpm = Math.Max(normed_rpm_set - normed_rpm, 0);
 
@@ -148,7 +152,25 @@ namespace WaveMix
 
             float a = 60.0f * torque_total / normed_mass;       // 60: Forgot to include dt when I tuned the constants :-) .
 
-            float new_rpm = Math.Clamp(curr_rpm + a * MaxRPM * dt, 0, MaxRPM);
+            float new_rpm = Math.Max(curr_rpm + a * MaxRPM * dt, 0);
+            if (new_rpm > MaxRPM)
+            {
+                new_rpm = MaxRPM;
+
+                // Calculate the required rev limitater to make the engine torque equal to to the current drag.
+                float torque_want = torque_wind_drag + torque_engine_drag + torque_brake;
+                float delta_normed_want = torque_want / torque_engine_max;
+                float rpm_want = 1 + delta_normed_want;
+                float rev_limit = 1 - (rpm_want / c_NormedRPMFromThrottle);
+
+                // And add a bit more, to make it bounce a bit :-)
+                float extra_rev_inhibit = (update_type == ERPMUpdateType.Crankshaft) ? 0.4f : 0.2f;
+
+                m_RevLimiter = Math.Min(rev_limit + extra_rev_inhibit, 1.0f);
+            }
+            else
+                m_RevLimiter = Math.Max(m_RevLimiter - dt * (1.0f / c_RevLimiterOffTau), 0);
+
             float on = Math.Clamp(delta_normed_rpm, 0, 1);
 
             return new SRPMUpdate(new_rpm, on);
