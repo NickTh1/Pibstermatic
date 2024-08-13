@@ -346,6 +346,7 @@
             // 
             // buttonSave
             // 
+            buttonSave.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             buttonSave.Location = new Point(914, 538);
             buttonSave.Name = "buttonSave";
             buttonSave.Size = new Size(75, 23);
