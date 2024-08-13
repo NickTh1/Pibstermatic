@@ -20,8 +20,9 @@ namespace WaveMix
             if (settings == null)
                 settings = new Settings();
 
+            string path_file = "";
             if (args.Length > 0)
-                settings.PathEngine = args[0];
+                path_file = args[0];
             else
             {
                 OpenFileDialog dlg = new OpenFileDialog();
@@ -38,8 +39,10 @@ namespace WaveMix
                 DialogResult result = dlg.ShowDialog();
                 if (result != DialogResult.OK)
                     return;
-                settings.PathEngine = dlg.FileName;
+                path_file = dlg.FileName;
             }
+
+            settings.PathEngine = path_file;
             SettingsIO.Write(settings);
 
             Application.Run(new MainForm(settings));

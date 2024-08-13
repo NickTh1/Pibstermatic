@@ -29,6 +29,8 @@ namespace WaveMix
 
         struct SCheckboxStates
         {
+            public SCheckboxStates() { }
+
             public int m_NumChecked = 0;
             public int m_NumUnchecked = 0;
         }
@@ -65,12 +67,18 @@ namespace WaveMix
 
         Stopwatch m_TimerStopwatch = new Stopwatch();
         double m_ElapsedLast = 0;
+        string m_JustSavedText = "";
+        double m_TimeJustSaved = 0;
+
+        DialogResult m_StoredReloadDlgResult = DialogResult.None;
+        bool m_PromptingReload = false;
 
         Dictionary<Tuple<int, string>, GridSampleModel> m_SampleModels = new Dictionary<Tuple<int, string>, GridSampleModel>();
 
         FileSystemWatcher m_EngineFileWatcher;
 
         TextEditor? m_LiveEditor = null;
+        SCLEditor? m_SCLEditor = null;
 
         int m_Stroke = 4;
         int m_Cylinders = 4;
@@ -161,14 +169,13 @@ namespace WaveMix
 
         private void M_EngineFileWatcher_Renamed(object sender, RenamedEventArgs e)
         {
-            throw new NotImplementedException();
         }
 
         void EngineFileWatcher_Changed_MainThread(object sender, FileSystemEventArgs e)
         {
             if (IsModifying)
                 return;
-            UpdateEngineFromFile();
+            AskThenReloadEngineFromFile();
         }
 
         private void EngineFileWatcher_Changed(object sender, FileSystemEventArgs e)
@@ -212,12 +219,12 @@ namespace WaveMix
                 min_mag = Math.Min(min_mag, magnitude);
                 max_mag = Math.Max(max_mag, magnitude);
 
-                float freq = (float)i * (88200.0f/c_FFTBufferSize);
+                float freq = (float)i * (88200.0f / c_FFTBufferSize);
 
                 m_FFTLineSeries.Points.Add(new DataPoint(freq, magnitude));
             }
 
-            float plot_max_freq = m_EnginePlayer.MaxRPM * (1.0f/60.0f) * (float)m_Cylinders * (2.0f / m_Stroke);
+            float plot_max_freq = m_EnginePlayer.MaxRPM * (1.0f / 60.0f) * (float)m_Cylinders * (2.0f / m_Stroke);
 
             m_PlotModelFFT.Axes[0].Minimum = -10;       // So that the annotation doesn't disappear when at 0.
             m_PlotModelFFT.Axes[0].Maximum = plot_max_freq * 1.01f;
@@ -254,11 +261,12 @@ namespace WaveMix
                 return;
 
             float dt = 0;
+            double elapsed_now = 0;
             if (!m_TimerStopwatch.IsRunning)
                 m_TimerStopwatch.Start();
             else
             {
-                double elapsed_now = m_TimerStopwatch.Elapsed.TotalSeconds;
+                elapsed_now = m_TimerStopwatch.Elapsed.TotalSeconds;
                 dt = (float)(elapsed_now - m_ElapsedLast);
                 m_ElapsedLast = elapsed_now;
             }
@@ -273,6 +281,12 @@ namespace WaveMix
             UpdateWave();
             UpdateRMS();
             UpdateGridState();
+
+            if (m_JustSavedText != null)
+            {
+                if (elapsed_now - m_TimeJustSaved > 1.0)
+                    m_JustSavedText = "";       // Clear after a second. If it changes after that, we can prompt.
+            }
         }
 
         static bool CanAutoPitchMin(EnginePlayer.Sample sample)
@@ -358,6 +372,14 @@ namespace WaveMix
 
         void UpdateGridState()
         {
+            int index_scledit_layer = -1;
+            int index_scledit_sample = -1;
+            if (m_SCLEditor != null)
+            {
+                index_scledit_layer = m_SCLEditor.GetIndexLayer();
+                index_scledit_sample = m_SCLEditor.GetIndexSample();
+            }
+
             using (Modifying modifying = Modify())
             {
                 DataGridViewRowCollection rows = dataGridViewWavs.Rows;
@@ -371,24 +393,64 @@ namespace WaveMix
                     float amplitude = m_EnginePlayer.WavPlayer.GetWavPlaybackAmplitude(sample.m_HandleWav);
                     cells[(int)EColumnIndex.CurrentVolume].Value = (amplitude > 0.0f) ? amplitude.ToString("0.00", CultureInfo.InvariantCulture) : "";
                     cells[(int)EColumnIndex.CurrentVolume].Style.BackColor = (amplitude > 0.0f) ? color_active : Color.White;
+
+                    if (sample.m_IndexLayer == index_scledit_layer && sample.m_IndexSampleInLayer == index_scledit_sample && m_SCLEditor != null)
+                        m_SCLEditor.SetCurrentSampleState(amplitude);
                 }
             }
         }
-
 
         void UpdateEngineFromFile()
         {
             try
             {
                 string engine_props_text = File.ReadAllText(m_EnginePath);
+
                 m_EnginePlayer.UpdateEngineProperties(engine_props_text);
                 UpdateGridRows();
                 UpdateEngineState();
 
                 if (m_LiveEditor != null)
                     m_LiveEditor.EditorText = engine_props_text;
-            } catch(Exception)
+
+                if (m_SCLEditor != null)
+                    m_SCLEditor.UpdateFromText(engine_props_text);
+            }
+            catch (Exception)
             {
+            }
+        }
+
+        void AskThenReloadEngineFromFile()
+        {
+            try
+            {
+                string engine_props_text = File.ReadAllText(m_EnginePath);
+                if (string.Equals(engine_props_text, m_JustSavedText))
+                    return;
+                if (m_PromptingReload)
+                    return;                 // Can otherwise recurse :-/ 
+                m_PromptingReload = true;
+
+                DialogResult reload_dlg_result = m_StoredReloadDlgResult;
+                if (reload_dlg_result == DialogResult.None)
+                {
+                    bool dont_ask_again = false;
+                    reload_dlg_result = MessageBoxAskAgain.Show("File was modified on disk", "Reload?", out dont_ask_again);
+                    if (dont_ask_again)
+                        m_StoredReloadDlgResult = reload_dlg_result;
+                }
+                if (reload_dlg_result != DialogResult.Yes)
+                    return;
+
+                UpdateEngineFromFile();
+            }
+            catch (Exception)
+            {
+            }
+            finally
+            {
+                m_PromptingReload = false;
             }
         }
 
@@ -430,32 +492,22 @@ namespace WaveMix
                 m_PlotModelFFT.Annotations.Add(m_FFTAnnotationCylinder);
         }
 
-        static byte LerpColorComponent(float t, int op1, int op2)
-        {
-            return (byte)Math.Round((float)op1 * (1.0f - t) + (float)op2 * t);
-        }
-
-        static OxyColor Lerp(float t, OxyColor op1, OxyColor op2)
-        {
-            return OxyColor.FromArgb(LerpColorComponent(t, op1.A, op2.A), LerpColorComponent(t, op1.R, op2.R), LerpColorComponent(t, op1.G, op2.G), LerpColorComponent(t, op1.B, op2.B));
-        }
-
         void SetAnnotations(SEngineState engine_state)
         {
-            float rotation_freq = engine_state.m_RPM * (1.0f/60.0f);
+            float rotation_freq = engine_state.m_RPM * (1.0f / 60.0f);
 
             m_FFTAnnotationCycle.X = rotation_freq * 2.0f / (float)m_Stroke;
             m_FFTAnnotationRevolution.X = rotation_freq;
             m_FFTAnnotationCylinder.X = rotation_freq * (float)m_Cylinders;
             m_FFTAnnotationCombustion.X = rotation_freq * (float)m_Cylinders * 2.0f / (float)m_Stroke;
 
-            m_FFTAnnotationCycle.Color = Lerp(engine_state.m_On, OxyColor.FromArgb(0xff, 0x40, 0x40, 0x30), OxyColor.FromArgb(0xff, 0xff, 0xa0, 0xff));
+            m_FFTAnnotationCycle.Color = Utils.Lerp(engine_state.m_On, OxyColor.FromArgb(0xff, 0x40, 0x40, 0x30), OxyColor.FromArgb(0xff, 0xff, 0xa0, 0xff));
             m_FFTAnnotationRevolution.Color = OxyColor.FromArgb(0xff, 0xff, 0xff, 0xa0);
             m_FFTAnnotationCylinder.Color = OxyColor.FromArgb(0xff, 0x80, 0x80, 0x50);
-            m_FFTAnnotationCombustion.Color = Lerp(engine_state.m_On, OxyColor.FromArgb(0xff, 0x30, 0x40, 0x40), OxyColor.FromArgb(0xff, 0xa0, 0xff, 0xff));
+            m_FFTAnnotationCombustion.Color = Utils.Lerp(engine_state.m_On, OxyColor.FromArgb(0xff, 0x30, 0x40, 0x40), OxyColor.FromArgb(0xff, 0xa0, 0xff, 0xff));
 
-            m_FFTAnnotationCycle.TextColor = Lerp(engine_state.m_On, OxyColors.Gray, OxyColors.White);
-            m_FFTAnnotationCombustion.TextColor = Lerp(engine_state.m_On, OxyColors.Gray, OxyColors.White);
+            m_FFTAnnotationCycle.TextColor = Utils.Lerp(engine_state.m_On, OxyColors.Gray, OxyColors.White);
+            m_FFTAnnotationCombustion.TextColor = Utils.Lerp(engine_state.m_On, OxyColors.Gray, OxyColors.White);
             m_FFTAnnotationCylinder.TextColor = OxyColors.Gray;
         }
 
@@ -464,6 +516,13 @@ namespace WaveMix
             m_EnginePlayer.UpdateAudio(engine_state);
 
             SetAnnotations(engine_state);
+        }
+
+        void SetSCLEditorRPM(float rpm)
+        {
+            if (m_SCLEditor == null)
+                return;
+            m_SCLEditor.RPM = rpm;
         }
 
         void UpdateRaw()
@@ -477,6 +536,8 @@ namespace WaveMix
             engine_state.m_On = on;
 
             UpdateFromEngineState(engine_state);
+
+            SetSCLEditorRPM(rpm);
         }
 
         void UpdateSim(float dt)
@@ -490,6 +551,7 @@ namespace WaveMix
                 SetTextBoxRPM(m_EngineSim.CurrentRPM);
                 TrackBarRPM = m_EngineSim.CurrentRPM;
                 textBoxOn.Text = engine_state.m_On.ToString("0.00", CultureInfo.InvariantCulture);
+                SetSCLEditorRPM(m_EngineSim.CurrentRPM);
             }
         }
 
@@ -546,9 +608,10 @@ namespace WaveMix
                 TrackBarRPM = rpm;
 
                 UpdateRaw();
-            } catch
+            }
+            catch
             {
-            } 
+            }
         }
 
         void UpdateOverallVolume()
@@ -565,12 +628,29 @@ namespace WaveMix
 
         void textEditor_EditorTextChanged(object? sender, EventArgs e)
         {
+            m_JustSavedText = "";
             if (m_LiveEditor == null)       // Get rid of warning
                 return;
             string engine_props_text = m_LiveEditor.EditorText;
             m_EnginePlayer.UpdateEngineProperties(engine_props_text);
             UpdateGridRows();
             UpdateEngineState();
+
+            if (m_SCLEditor != null)
+                m_SCLEditor.UpdateFromText(engine_props_text);
+        }
+
+        void Save(string engine_props_text)
+        {
+            try
+            {
+                m_JustSavedText = engine_props_text;
+                File.WriteAllText(m_EnginePath, engine_props_text);
+                m_TimeJustSaved = m_TimerStopwatch.Elapsed.Seconds;
+            }
+            catch (Exception)
+            {
+            }
         }
 
         void textEditor_Save(object? sender, EventArgs e)
@@ -581,13 +661,7 @@ namespace WaveMix
                     return;
 
                 string engine_props_text = m_LiveEditor.EditorText;
-                try
-                {
-                    File.WriteAllText(m_EnginePath, engine_props_text);
-                }
-                catch (Exception)
-                {
-                }
+                Save(engine_props_text);
             }
         }
 
@@ -700,6 +774,9 @@ namespace WaveMix
             sample_state.m_AutoMinPitch = auto_min_pitch && CanAutoPitchMin(sample);
 
             m_EnginePlayer.SetSampleState(index_row, sample_state);
+
+            if (m_SCLEditor != null)
+                m_SCLEditor.SetSampleAutoMinPitch(sample.m_IndexLayer, sample.m_IndexSampleInLayer, sample_state.m_AutoMinPitch);
         }
 
         void UpdateButtons()
@@ -851,14 +928,110 @@ namespace WaveMix
 
         private void textBoxIdleRPM_TextChanged(object sender, EventArgs e)
         {
+            if (IsModifying)
+                return;
             try
             {
                 float idle_rpm = (float)Convert.ToDouble(textBoxIdleRPM.Text);
                 m_EngineSim.IdleRPM = idle_rpm;
                 WriteSettings();
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        void sclEditor_PropertyChanged(object? sender, EventArgs e)
+        {
+            if (m_SCLEditor == null)       // Get rid of warning
+                return;
+            m_JustSavedText = "";
+            StructuredProperties engine_props = m_SCLEditor.EngineProperties;
+            m_EnginePlayer.UpdateEngineProperties(engine_props);
+            UpdateGridRows();
+            UpdateEngineState();
+
+            if (m_LiveEditor != null && !m_LiveEditor.IsDisposed)
+            {
+                string engine_props_text = PropsFile.SerializePropsFile(engine_props);
+                m_LiveEditor.EditorText = engine_props_text;
+            }
+        }
+
+        int FindSample(int index_layer, int index_sample_in_layer)
+        {
+            int num_samples = m_EnginePlayer.NumSamples;
+            for (int i = 0; i < num_samples; i++)
+            {
+                EnginePlayer.Sample sample = m_EnginePlayer.GetSample(i);
+                if (sample.m_IndexLayer == index_layer && sample.m_IndexSampleInLayer == index_sample_in_layer)
+                    return i;
+            }
+            return -1;
+        }
+
+        void sclEditor_SelectedSampleChanged(object? sender, EventArgs e)
+        {
+            if (m_SCLEditor == null)       // Get rid of warning
+                return;
+
+            int index_layer = m_SCLEditor.GetIndexLayer();
+            int index_sample_in_layer = m_SCLEditor.GetIndexSample();
+            int index_sample = FindSample(index_layer, index_sample_in_layer);
+
+            if (index_sample >= 0)
+            {
+                dataGridViewWavs.ClearSelection();
+                dataGridViewWavs.Rows[index_sample].Selected = true;
+
+                EnginePlayer.Sample sample = m_EnginePlayer.GetSample(index_sample);
+                GridSampleModel sample_model = GetSampleModel(sample);
+                m_SCLEditor.SetSampleAutoMinPitch(index_layer, index_sample_in_layer, sample_model.m_AutoMinPitch);
+            }
+        }
+
+        void sclEditor_Save(object? sender, EventArgs e)
+        {
+            using (Modifying modifying = Modify())
+            {
+                if (m_SCLEditor == null)       // Get rid of warning
+                    return;
+
+                StructuredProperties props = m_SCLEditor.EngineProperties;
+                string engine_props_text = PropsFile.SerializePropsFile(props);
+
+                Save(engine_props_text);
+            }
+        }
+
+
+        void EnsureSCLEditorOpen()
+        {
+            if (m_SCLEditor != null && !m_SCLEditor.IsDisposed)
+                return;
+            try
+            {
+                string engine_props_text;
+                if (m_LiveEditor != null && !m_LiveEditor.IsDisposed)
+                    engine_props_text = m_LiveEditor.EditorText;
+                else
+                    engine_props_text = File.ReadAllText(m_EnginePath);
+
+                m_SCLEditor = new SCLEditor(m_EnginePath, engine_props_text);
+                m_SCLEditor.OnPropertyChanged += new System.EventHandler(sclEditor_PropertyChanged);
+                m_SCLEditor.OnSelectedSampleChanged += new System.EventHandler(sclEditor_SelectedSampleChanged);
+                m_SCLEditor.OnSave += new System.EventHandler(sclEditor_Save);
+                m_SCLEditor.Show();
+
+                SetSCLEditorRPM(TrackBarRPM);
             } catch(Exception)
             {
             }
+        }
+
+        private void buttonEditEnvelopes_Click(object sender, EventArgs e)
+        {
+            EnsureSCLEditorOpen();
         }
     }
 }

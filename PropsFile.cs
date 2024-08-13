@@ -7,7 +7,7 @@ using System.Globalization;
 
 namespace WaveMix
 {
-    internal class PropsFileReader
+    internal class PropsFile
     {
         static readonly char[] c_Delimeters = new char[]{ ' ', '\t', '=', ';'};
 
@@ -82,7 +82,7 @@ namespace WaveMix
 
         }
 
-        static SKeyedValue[] ParseParent(ParseContext context)
+        static StructuredProperties ParseParent(ParseContext context)
         {
             while (true)
             {
@@ -101,7 +101,7 @@ namespace WaveMix
             string end = GetLine(context);
             if (end != "}")
                 throw new Exception("Expected '}'");
-            return children;
+            return new StructuredProperties(children);
         }
 
         static SKeyedValue? ParseValue(ParseContext context)
@@ -166,6 +166,70 @@ namespace WaveMix
 
                 return ParsePropsFile(text);
             }
+        }
+
+        static void AppendIndent(StringBuilder builder, int depth)
+        {
+            for (int i = 0; i < depth; i++)
+                builder.Append('\t');
+        }
+
+        static void SerializeProps(StructuredProperties props, StringBuilder builder, int depth)
+        {
+            for (int i = 0; i < props.Count; i++)
+            {
+                SKeyedValue keyed_value = props.GetKeyedValue(i);
+
+                AppendIndent(builder, depth);
+                builder.Append(keyed_value.m_Key);
+
+                if (keyed_value.m_TypedValue.m_Type == EValueType.Parent)
+                {
+                    builder.Append("\r\n");
+                    AppendIndent(builder, depth);
+                    builder.Append("{\r\n");
+                    StructuredProperties child = (StructuredProperties)keyed_value.m_TypedValue.m_Value;
+                    SerializeProps(child, builder, depth + 1);
+                    AppendIndent(builder, depth);
+                    builder.Append('}');
+                }
+                else
+                {
+                    builder.Append(" = ");
+                    switch (keyed_value.m_TypedValue.m_Type)
+                    {
+                        case EValueType.Float:
+                            builder.Append(((float)keyed_value.m_TypedValue.m_Value).ToString(CultureInfo.InvariantCulture));
+                            break;
+                        case EValueType.String:
+                            builder.Append((string)keyed_value.m_TypedValue.m_Value);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                builder.Append("\r\n");
+            }
+        }
+
+
+        public static string SerializePropsFile(StructuredProperties props)
+        {
+            StringBuilder builder = new StringBuilder();
+
+            SerializeProps(props, builder, 0);
+
+            return builder.ToString();
+        }
+
+        public static void WritePropsFile(string path, StructuredProperties props)
+        {
+            string text = SerializePropsFile(props);
+            using(StreamWriter writer = File.CreateText(path))
+            {
+                writer.Write(text);
+            }
+
         }
     }
 }

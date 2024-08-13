@@ -28,579 +28,573 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.buttonLiveEdit = new System.Windows.Forms.Button();
-            this.tabControlControl = new System.Windows.Forms.TabControl();
-            this.tabPageRaw = new System.Windows.Forms.TabPage();
-            this.trackBarOn = new System.Windows.Forms.TrackBar();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.textBoxRPM = new System.Windows.Forms.TextBox();
-            this.trackBarRPM = new System.Windows.Forms.TrackBar();
-            this.tabPageSim = new System.Windows.Forms.TabPage();
-            this.buttonBrake = new System.Windows.Forms.Button();
-            this.checkBoxClutch = new System.Windows.Forms.CheckBox();
-            this.textBoxOn = new System.Windows.Forms.TextBox();
-            this.label12 = new System.Windows.Forms.Label();
-            this.textBoxCurrentRPM = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.textBoxIdleRPM = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.trackBarGearing = new System.Windows.Forms.TrackBar();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.trackBarThrottle = new System.Windows.Forms.TrackBar();
-            this.label7 = new System.Windows.Forms.Label();
-            this.plotViewFFT = new OxyPlot.WindowsForms.PlotView();
-            this.timer = new System.Windows.Forms.Timer(this.components);
-            this.trackBarOverallVolume = new System.Windows.Forms.TrackBar();
-            this.label3 = new System.Windows.Forms.Label();
-            this.dataGridViewWavs = new System.Windows.Forms.DataGridView();
-            this.columnWav = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.columnEnabled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.columnExtendedRange = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.columnAutoMinPitch = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.columnRecommendedMinPitch = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.columnCurrentVolume = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.plotViewWave = new OxyPlot.WindowsForms.PlotView();
-            this.buttonDisableAll = new System.Windows.Forms.Button();
-            this.buttonEnableAll = new System.Windows.Forms.Button();
-            this.textBoxRMS = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.comboBoxStroke = new System.Windows.Forms.ComboBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.comboBoxCylinders = new System.Windows.Forms.ComboBox();
-            this.buttonAutoMinPitchEnable = new System.Windows.Forms.Button();
-            this.buttonAutoMinPitchDisable = new System.Windows.Forms.Button();
-            this.tabControlControl.SuspendLayout();
-            this.tabPageRaw.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBarOn)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBarRPM)).BeginInit();
-            this.tabPageSim.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBarGearing)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBarThrottle)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBarOverallVolume)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewWavs)).BeginInit();
-            this.SuspendLayout();
+            components = new System.ComponentModel.Container();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            buttonLiveEdit = new Button();
+            tabControlControl = new TabControl();
+            tabPageRaw = new TabPage();
+            trackBarOn = new TrackBar();
+            label2 = new Label();
+            label1 = new Label();
+            textBoxRPM = new TextBox();
+            trackBarRPM = new TrackBar();
+            tabPageSim = new TabPage();
+            buttonBrake = new Button();
+            checkBoxClutch = new CheckBox();
+            textBoxOn = new TextBox();
+            label12 = new Label();
+            textBoxCurrentRPM = new TextBox();
+            label11 = new Label();
+            textBoxIdleRPM = new TextBox();
+            label10 = new Label();
+            trackBarGearing = new TrackBar();
+            label9 = new Label();
+            label8 = new Label();
+            trackBarThrottle = new TrackBar();
+            label7 = new Label();
+            plotViewFFT = new OxyPlot.WindowsForms.PlotView();
+            timer = new System.Windows.Forms.Timer(components);
+            trackBarOverallVolume = new TrackBar();
+            label3 = new Label();
+            dataGridViewWavs = new DataGridView();
+            plotViewWave = new OxyPlot.WindowsForms.PlotView();
+            buttonDisableAll = new Button();
+            buttonEnableAll = new Button();
+            textBoxRMS = new TextBox();
+            label4 = new Label();
+            label5 = new Label();
+            comboBoxStroke = new ComboBox();
+            label6 = new Label();
+            comboBoxCylinders = new ComboBox();
+            buttonAutoMinPitchEnable = new Button();
+            buttonAutoMinPitchDisable = new Button();
+            buttonEditEnvelopes = new Button();
+            columnWav = new DataGridViewTextBoxColumn();
+            columnEnabled = new DataGridViewCheckBoxColumn();
+            columnExtendedRange = new DataGridViewCheckBoxColumn();
+            columnAutoMinPitch = new DataGridViewCheckBoxColumn();
+            columnRecommendedMinPitch = new DataGridViewTextBoxColumn();
+            columnCurrentVolume = new DataGridViewTextBoxColumn();
+            tabControlControl.SuspendLayout();
+            tabPageRaw.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)trackBarOn).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)trackBarRPM).BeginInit();
+            tabPageSim.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)trackBarGearing).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)trackBarThrottle).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)trackBarOverallVolume).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewWavs).BeginInit();
+            SuspendLayout();
             // 
             // buttonLiveEdit
             // 
-            this.buttonLiveEdit.Location = new System.Drawing.Point(12, 12);
-            this.buttonLiveEdit.Name = "buttonLiveEdit";
-            this.buttonLiveEdit.Size = new System.Drawing.Size(75, 23);
-            this.buttonLiveEdit.TabIndex = 1;
-            this.buttonLiveEdit.Text = "Live Edit";
-            this.buttonLiveEdit.UseVisualStyleBackColor = true;
-            this.buttonLiveEdit.Click += new System.EventHandler(this.buttonLiveEdit_Click);
+            buttonLiveEdit.Location = new Point(12, 12);
+            buttonLiveEdit.Name = "buttonLiveEdit";
+            buttonLiveEdit.Size = new Size(85, 23);
+            buttonLiveEdit.TabIndex = 1;
+            buttonLiveEdit.Text = "Live Edit Text";
+            buttonLiveEdit.UseVisualStyleBackColor = true;
+            buttonLiveEdit.Click += buttonLiveEdit_Click;
             // 
             // tabControlControl
             // 
-            this.tabControlControl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabControlControl.Controls.Add(this.tabPageRaw);
-            this.tabControlControl.Controls.Add(this.tabPageSim);
-            this.tabControlControl.Location = new System.Drawing.Point(12, 199);
-            this.tabControlControl.Name = "tabControlControl";
-            this.tabControlControl.SelectedIndex = 0;
-            this.tabControlControl.Size = new System.Drawing.Size(1100, 143);
-            this.tabControlControl.TabIndex = 2;
+            tabControlControl.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            tabControlControl.Controls.Add(tabPageRaw);
+            tabControlControl.Controls.Add(tabPageSim);
+            tabControlControl.Location = new Point(12, 199);
+            tabControlControl.Name = "tabControlControl";
+            tabControlControl.SelectedIndex = 0;
+            tabControlControl.Size = new Size(1100, 143);
+            tabControlControl.TabIndex = 2;
             // 
             // tabPageRaw
             // 
-            this.tabPageRaw.Controls.Add(this.trackBarOn);
-            this.tabPageRaw.Controls.Add(this.label2);
-            this.tabPageRaw.Controls.Add(this.label1);
-            this.tabPageRaw.Controls.Add(this.textBoxRPM);
-            this.tabPageRaw.Controls.Add(this.trackBarRPM);
-            this.tabPageRaw.Location = new System.Drawing.Point(4, 24);
-            this.tabPageRaw.Name = "tabPageRaw";
-            this.tabPageRaw.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageRaw.Size = new System.Drawing.Size(1092, 115);
-            this.tabPageRaw.TabIndex = 0;
-            this.tabPageRaw.Text = "Raw";
-            this.tabPageRaw.UseVisualStyleBackColor = true;
+            tabPageRaw.Controls.Add(trackBarOn);
+            tabPageRaw.Controls.Add(label2);
+            tabPageRaw.Controls.Add(label1);
+            tabPageRaw.Controls.Add(textBoxRPM);
+            tabPageRaw.Controls.Add(trackBarRPM);
+            tabPageRaw.Location = new Point(4, 24);
+            tabPageRaw.Name = "tabPageRaw";
+            tabPageRaw.Padding = new Padding(3);
+            tabPageRaw.Size = new Size(1092, 115);
+            tabPageRaw.TabIndex = 0;
+            tabPageRaw.Text = "Raw";
+            tabPageRaw.UseVisualStyleBackColor = true;
             // 
             // trackBarOn
             // 
-            this.trackBarOn.Location = new System.Drawing.Point(70, 57);
-            this.trackBarOn.Maximum = 1000000;
-            this.trackBarOn.Name = "trackBarOn";
-            this.trackBarOn.Size = new System.Drawing.Size(166, 45);
-            this.trackBarOn.TabIndex = 5;
-            this.trackBarOn.TickFrequency = 0;
-            this.trackBarOn.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.trackBarOn.Scroll += new System.EventHandler(this.trackBarOn_Scroll);
+            trackBarOn.Location = new Point(70, 57);
+            trackBarOn.Maximum = 1000000;
+            trackBarOn.Name = "trackBarOn";
+            trackBarOn.Size = new Size(166, 45);
+            trackBarOn.TabIndex = 5;
+            trackBarOn.TickFrequency = 0;
+            trackBarOn.TickStyle = TickStyle.None;
+            trackBarOn.Scroll += trackBarOn_Scroll;
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(19, 57);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(26, 15);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "On:";
+            label2.AutoSize = true;
+            label2.Location = new Point(19, 57);
+            label2.Name = "label2";
+            label2.Size = new Size(26, 15);
+            label2.TabIndex = 4;
+            label2.Text = "On:";
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(19, 9);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 15);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "RPM:";
+            label1.AutoSize = true;
+            label1.Location = new Point(19, 9);
+            label1.Name = "label1";
+            label1.Size = new Size(35, 15);
+            label1.TabIndex = 3;
+            label1.Text = "RPM:";
             // 
             // textBoxRPM
             // 
-            this.textBoxRPM.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxRPM.Location = new System.Drawing.Point(984, 6);
-            this.textBoxRPM.Name = "textBoxRPM";
-            this.textBoxRPM.Size = new System.Drawing.Size(100, 23);
-            this.textBoxRPM.TabIndex = 1;
-            this.textBoxRPM.TextChanged += new System.EventHandler(this.textBoxRPM_TextChanged);
+            textBoxRPM.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            textBoxRPM.Location = new Point(984, 6);
+            textBoxRPM.Name = "textBoxRPM";
+            textBoxRPM.Size = new Size(100, 23);
+            textBoxRPM.TabIndex = 1;
+            textBoxRPM.TextChanged += textBoxRPM_TextChanged;
             // 
             // trackBarRPM
             // 
-            this.trackBarRPM.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.trackBarRPM.Location = new System.Drawing.Point(70, 6);
-            this.trackBarRPM.Maximum = 1000000;
-            this.trackBarRPM.Name = "trackBarRPM";
-            this.trackBarRPM.Size = new System.Drawing.Size(908, 45);
-            this.trackBarRPM.TabIndex = 0;
-            this.trackBarRPM.TickFrequency = 0;
-            this.trackBarRPM.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.trackBarRPM.Scroll += new System.EventHandler(this.trackBarRPM_Scroll);
+            trackBarRPM.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            trackBarRPM.Location = new Point(70, 6);
+            trackBarRPM.Maximum = 1000000;
+            trackBarRPM.Name = "trackBarRPM";
+            trackBarRPM.Size = new Size(908, 45);
+            trackBarRPM.TabIndex = 0;
+            trackBarRPM.TickFrequency = 0;
+            trackBarRPM.TickStyle = TickStyle.None;
+            trackBarRPM.Scroll += trackBarRPM_Scroll;
             // 
             // tabPageSim
             // 
-            this.tabPageSim.Controls.Add(this.buttonBrake);
-            this.tabPageSim.Controls.Add(this.checkBoxClutch);
-            this.tabPageSim.Controls.Add(this.textBoxOn);
-            this.tabPageSim.Controls.Add(this.label12);
-            this.tabPageSim.Controls.Add(this.textBoxCurrentRPM);
-            this.tabPageSim.Controls.Add(this.label11);
-            this.tabPageSim.Controls.Add(this.textBoxIdleRPM);
-            this.tabPageSim.Controls.Add(this.label10);
-            this.tabPageSim.Controls.Add(this.trackBarGearing);
-            this.tabPageSim.Controls.Add(this.label9);
-            this.tabPageSim.Controls.Add(this.label8);
-            this.tabPageSim.Controls.Add(this.trackBarThrottle);
-            this.tabPageSim.Controls.Add(this.label7);
-            this.tabPageSim.Location = new System.Drawing.Point(4, 24);
-            this.tabPageSim.Name = "tabPageSim";
-            this.tabPageSim.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageSim.Size = new System.Drawing.Size(1092, 115);
-            this.tabPageSim.TabIndex = 1;
-            this.tabPageSim.Text = "Sim";
-            this.tabPageSim.UseVisualStyleBackColor = true;
+            tabPageSim.Controls.Add(buttonBrake);
+            tabPageSim.Controls.Add(checkBoxClutch);
+            tabPageSim.Controls.Add(textBoxOn);
+            tabPageSim.Controls.Add(label12);
+            tabPageSim.Controls.Add(textBoxCurrentRPM);
+            tabPageSim.Controls.Add(label11);
+            tabPageSim.Controls.Add(textBoxIdleRPM);
+            tabPageSim.Controls.Add(label10);
+            tabPageSim.Controls.Add(trackBarGearing);
+            tabPageSim.Controls.Add(label9);
+            tabPageSim.Controls.Add(label8);
+            tabPageSim.Controls.Add(trackBarThrottle);
+            tabPageSim.Controls.Add(label7);
+            tabPageSim.Location = new Point(4, 24);
+            tabPageSim.Name = "tabPageSim";
+            tabPageSim.Padding = new Padding(3);
+            tabPageSim.Size = new Size(1092, 115);
+            tabPageSim.TabIndex = 1;
+            tabPageSim.Text = "Sim";
+            tabPageSim.UseVisualStyleBackColor = true;
             // 
             // buttonBrake
             // 
-            this.buttonBrake.Location = new System.Drawing.Point(611, 17);
-            this.buttonBrake.Name = "buttonBrake";
-            this.buttonBrake.Size = new System.Drawing.Size(75, 23);
-            this.buttonBrake.TabIndex = 12;
-            this.buttonBrake.Text = "Brake";
-            this.buttonBrake.UseVisualStyleBackColor = true;
-            this.buttonBrake.MouseDown += new System.Windows.Forms.MouseEventHandler(this.buttonBrake_MouseDown);
-            this.buttonBrake.MouseUp += new System.Windows.Forms.MouseEventHandler(this.buttonBrake_MouseUp);
+            buttonBrake.Location = new Point(611, 17);
+            buttonBrake.Name = "buttonBrake";
+            buttonBrake.Size = new Size(75, 23);
+            buttonBrake.TabIndex = 12;
+            buttonBrake.Text = "Brake";
+            buttonBrake.UseVisualStyleBackColor = true;
+            buttonBrake.MouseDown += buttonBrake_MouseDown;
+            buttonBrake.MouseUp += buttonBrake_MouseUp;
             // 
             // checkBoxClutch
             // 
-            this.checkBoxClutch.AutoSize = true;
-            this.checkBoxClutch.Location = new System.Drawing.Point(540, 21);
-            this.checkBoxClutch.Name = "checkBoxClutch";
-            this.checkBoxClutch.Size = new System.Drawing.Size(61, 19);
-            this.checkBoxClutch.TabIndex = 11;
-            this.checkBoxClutch.Text = "Clutch";
-            this.checkBoxClutch.UseVisualStyleBackColor = true;
-            this.checkBoxClutch.CheckedChanged += new System.EventHandler(this.checkBoxClutch_CheckedChanged);
+            checkBoxClutch.AutoSize = true;
+            checkBoxClutch.Location = new Point(540, 21);
+            checkBoxClutch.Name = "checkBoxClutch";
+            checkBoxClutch.Size = new Size(61, 19);
+            checkBoxClutch.TabIndex = 11;
+            checkBoxClutch.Text = "Clutch";
+            checkBoxClutch.UseVisualStyleBackColor = true;
+            checkBoxClutch.CheckedChanged += checkBoxClutch_CheckedChanged;
             // 
             // textBoxOn
             // 
-            this.textBoxOn.Location = new System.Drawing.Point(540, 79);
-            this.textBoxOn.Name = "textBoxOn";
-            this.textBoxOn.ReadOnly = true;
-            this.textBoxOn.Size = new System.Drawing.Size(61, 23);
-            this.textBoxOn.TabIndex = 10;
+            textBoxOn.Location = new Point(540, 79);
+            textBoxOn.Name = "textBoxOn";
+            textBoxOn.ReadOnly = true;
+            textBoxOn.Size = new Size(61, 23);
+            textBoxOn.TabIndex = 10;
             // 
             // label12
             // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(508, 82);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(26, 15);
-            this.label12.TabIndex = 9;
-            this.label12.Text = "On:";
+            label12.AutoSize = true;
+            label12.Location = new Point(508, 82);
+            label12.Name = "label12";
+            label12.Size = new Size(26, 15);
+            label12.TabIndex = 9;
+            label12.Text = "On:";
             // 
             // textBoxCurrentRPM
             // 
-            this.textBoxCurrentRPM.BackColor = System.Drawing.SystemColors.Control;
-            this.textBoxCurrentRPM.Location = new System.Drawing.Point(384, 79);
-            this.textBoxCurrentRPM.Name = "textBoxCurrentRPM";
-            this.textBoxCurrentRPM.ReadOnly = true;
-            this.textBoxCurrentRPM.Size = new System.Drawing.Size(80, 23);
-            this.textBoxCurrentRPM.TabIndex = 8;
+            textBoxCurrentRPM.BackColor = SystemColors.Control;
+            textBoxCurrentRPM.Location = new Point(384, 79);
+            textBoxCurrentRPM.Name = "textBoxCurrentRPM";
+            textBoxCurrentRPM.ReadOnly = true;
+            textBoxCurrentRPM.Size = new Size(80, 23);
+            textBoxCurrentRPM.TabIndex = 8;
             // 
             // label11
             // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(327, 82);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(35, 15);
-            this.label11.TabIndex = 7;
-            this.label11.Text = "RPM:";
+            label11.AutoSize = true;
+            label11.Location = new Point(327, 82);
+            label11.Name = "label11";
+            label11.Size = new Size(35, 15);
+            label11.TabIndex = 7;
+            label11.Text = "RPM:";
             // 
             // textBoxIdleRPM
             // 
-            this.textBoxIdleRPM.Location = new System.Drawing.Point(63, 79);
-            this.textBoxIdleRPM.Name = "textBoxIdleRPM";
-            this.textBoxIdleRPM.Size = new System.Drawing.Size(66, 23);
-            this.textBoxIdleRPM.TabIndex = 6;
-            this.textBoxIdleRPM.TextChanged += new System.EventHandler(this.textBoxIdleRPM_TextChanged);
+            textBoxIdleRPM.Location = new Point(63, 79);
+            textBoxIdleRPM.Name = "textBoxIdleRPM";
+            textBoxIdleRPM.Size = new Size(66, 23);
+            textBoxIdleRPM.TabIndex = 6;
+            textBoxIdleRPM.TextChanged += textBoxIdleRPM_TextChanged;
             // 
             // label10
             // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(6, 82);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(57, 15);
-            this.label10.TabIndex = 5;
-            this.label10.Text = "Idle RPM:";
+            label10.AutoSize = true;
+            label10.Location = new Point(6, 82);
+            label10.Name = "label10";
+            label10.Size = new Size(57, 15);
+            label10.TabIndex = 5;
+            label10.Text = "Idle RPM:";
             // 
             // trackBarGearing
             // 
-            this.trackBarGearing.Location = new System.Drawing.Point(384, 21);
-            this.trackBarGearing.Maximum = 1000000;
-            this.trackBarGearing.Name = "trackBarGearing";
-            this.trackBarGearing.Size = new System.Drawing.Size(150, 45);
-            this.trackBarGearing.TabIndex = 4;
-            this.trackBarGearing.TickFrequency = 0;
-            this.trackBarGearing.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.trackBarGearing.Scroll += new System.EventHandler(this.trackBarGearing_Scroll);
+            trackBarGearing.Location = new Point(384, 21);
+            trackBarGearing.Maximum = 1000000;
+            trackBarGearing.Name = "trackBarGearing";
+            trackBarGearing.Size = new Size(150, 45);
+            trackBarGearing.TabIndex = 4;
+            trackBarGearing.TickFrequency = 0;
+            trackBarGearing.TickStyle = TickStyle.None;
+            trackBarGearing.Scroll += trackBarGearing_Scroll;
             // 
             // label9
             // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(6, 3);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(516, 15);
-            this.label9.TabIndex = 3;
-            this.label9.Text = "Supremely inaccurate simulation. Do not use when planning stunt tricks or nuclear" +
-    " power plants.";
+            label9.AutoSize = true;
+            label9.Location = new Point(6, 3);
+            label9.Name = "label9";
+            label9.Size = new Size(516, 15);
+            label9.TabIndex = 3;
+            label9.Text = "Supremely inaccurate simulation. Do not use when planning stunt tricks or nuclear power plants.";
             // 
             // label8
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(327, 21);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(51, 15);
-            this.label8.TabIndex = 2;
-            this.label8.Text = "Gearing:";
+            label8.AutoSize = true;
+            label8.Location = new Point(327, 21);
+            label8.Name = "label8";
+            label8.Size = new Size(51, 15);
+            label8.TabIndex = 2;
+            label8.Text = "Gearing:";
             // 
             // trackBarThrottle
             // 
-            this.trackBarThrottle.Location = new System.Drawing.Point(63, 21);
-            this.trackBarThrottle.Maximum = 1000000;
-            this.trackBarThrottle.Name = "trackBarThrottle";
-            this.trackBarThrottle.Size = new System.Drawing.Size(229, 45);
-            this.trackBarThrottle.TabIndex = 1;
-            this.trackBarThrottle.TickFrequency = 0;
-            this.trackBarThrottle.TickStyle = System.Windows.Forms.TickStyle.None;
+            trackBarThrottle.Location = new Point(63, 21);
+            trackBarThrottle.Maximum = 1000000;
+            trackBarThrottle.Name = "trackBarThrottle";
+            trackBarThrottle.Size = new Size(229, 45);
+            trackBarThrottle.TabIndex = 1;
+            trackBarThrottle.TickFrequency = 0;
+            trackBarThrottle.TickStyle = TickStyle.None;
             // 
             // label7
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(6, 21);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(51, 15);
-            this.label7.TabIndex = 0;
-            this.label7.Text = "Throttle:";
+            label7.AutoSize = true;
+            label7.Location = new Point(6, 21);
+            label7.Name = "label7";
+            label7.Size = new Size(51, 15);
+            label7.TabIndex = 0;
+            label7.Text = "Throttle:";
             // 
             // plotViewFFT
             // 
-            this.plotViewFFT.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.plotViewFFT.BackColor = System.Drawing.Color.Black;
-            this.plotViewFFT.ForeColor = System.Drawing.Color.White;
-            this.plotViewFFT.Location = new System.Drawing.Point(16, 377);
-            this.plotViewFFT.Name = "plotViewFFT";
-            this.plotViewFFT.PanCursor = System.Windows.Forms.Cursors.Hand;
-            this.plotViewFFT.Size = new System.Drawing.Size(790, 208);
-            this.plotViewFFT.TabIndex = 4;
-            this.plotViewFFT.Text = "plotView1";
-            this.plotViewFFT.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
-            this.plotViewFFT.ZoomRectangleCursor = System.Windows.Forms.Cursors.SizeNWSE;
-            this.plotViewFFT.ZoomVerticalCursor = System.Windows.Forms.Cursors.SizeNS;
+            plotViewFFT.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            plotViewFFT.BackColor = Color.Black;
+            plotViewFFT.ForeColor = Color.White;
+            plotViewFFT.Location = new Point(16, 377);
+            plotViewFFT.Name = "plotViewFFT";
+            plotViewFFT.PanCursor = Cursors.Hand;
+            plotViewFFT.Size = new Size(790, 208);
+            plotViewFFT.TabIndex = 4;
+            plotViewFFT.Text = "plotView1";
+            plotViewFFT.ZoomHorizontalCursor = Cursors.SizeWE;
+            plotViewFFT.ZoomRectangleCursor = Cursors.SizeNWSE;
+            plotViewFFT.ZoomVerticalCursor = Cursors.SizeNS;
             // 
             // trackBarOverallVolume
             // 
-            this.trackBarOverallVolume.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.trackBarOverallVolume.Location = new System.Drawing.Point(960, 12);
-            this.trackBarOverallVolume.Maximum = 1000000;
-            this.trackBarOverallVolume.Name = "trackBarOverallVolume";
-            this.trackBarOverallVolume.Size = new System.Drawing.Size(152, 45);
-            this.trackBarOverallVolume.TabIndex = 5;
-            this.trackBarOverallVolume.TickFrequency = 0;
-            this.trackBarOverallVolume.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.trackBarOverallVolume.Value = 1000000;
-            this.trackBarOverallVolume.Scroll += new System.EventHandler(this.trackBarOverallVolume_Scroll);
+            trackBarOverallVolume.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            trackBarOverallVolume.Location = new Point(960, 12);
+            trackBarOverallVolume.Maximum = 1000000;
+            trackBarOverallVolume.Name = "trackBarOverallVolume";
+            trackBarOverallVolume.Size = new Size(152, 45);
+            trackBarOverallVolume.TabIndex = 5;
+            trackBarOverallVolume.TickFrequency = 0;
+            trackBarOverallVolume.TickStyle = TickStyle.None;
+            trackBarOverallVolume.Value = 1000000;
+            trackBarOverallVolume.Scroll += trackBarOverallVolume_Scroll;
             // 
             // label3
             // 
-            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(867, 16);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(90, 15);
-            this.label3.TabIndex = 6;
-            this.label3.Text = "Overall volume:";
+            label3.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            label3.AutoSize = true;
+            label3.Location = new Point(867, 16);
+            label3.Name = "label3";
+            label3.Size = new Size(90, 15);
+            label3.TabIndex = 6;
+            label3.Text = "Overall volume:";
             // 
             // dataGridViewWavs
             // 
-            this.dataGridViewWavs.AllowUserToAddRows = false;
-            this.dataGridViewWavs.AllowUserToDeleteRows = false;
-            this.dataGridViewWavs.AllowUserToResizeColumns = false;
-            this.dataGridViewWavs.AllowUserToResizeRows = false;
-            this.dataGridViewWavs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridViewWavs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewWavs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.columnWav,
-            this.columnEnabled,
-            this.columnExtendedRange,
-            this.columnAutoMinPitch,
-            this.columnRecommendedMinPitch,
-            this.columnCurrentVolume});
-            this.dataGridViewWavs.Location = new System.Drawing.Point(12, 41);
-            this.dataGridViewWavs.Name = "dataGridViewWavs";
-            this.dataGridViewWavs.RowHeadersVisible = false;
-            this.dataGridViewWavs.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            this.dataGridViewWavs.RowTemplate.Height = 25;
-            this.dataGridViewWavs.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dataGridViewWavs.Size = new System.Drawing.Size(965, 152);
-            this.dataGridViewWavs.TabIndex = 8;
-            this.dataGridViewWavs.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewWavs_CellDoubleClick);
-            this.dataGridViewWavs.CellStateChanged += new System.Windows.Forms.DataGridViewCellStateChangedEventHandler(this.dataGridViewWavs_CellStateChanged);
-            this.dataGridViewWavs.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewWavs_CellValueChanged);
-            this.dataGridViewWavs.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewWavs_ColumnHeaderMouseClick);
-            this.dataGridViewWavs.CurrentCellDirtyStateChanged += new System.EventHandler(this.dataGridViewWavs_CurrentCellDirtyStateChanged);
-            // 
-            // columnWav
-            // 
-            this.columnWav.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.columnWav.HeaderText = "Wav";
-            this.columnWav.Name = "columnWav";
-            this.columnWav.ReadOnly = true;
-            this.columnWav.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // columnEnabled
-            // 
-            this.columnEnabled.HeaderText = "Enabled";
-            this.columnEnabled.Name = "columnEnabled";
-            this.columnEnabled.Width = 60;
-            // 
-            // columnExtendedRange
-            // 
-            this.columnExtendedRange.HeaderText = "Extended Range";
-            this.columnExtendedRange.Name = "columnExtendedRange";
-            this.columnExtendedRange.Width = 60;
-            // 
-            // columnAutoMinPitch
-            // 
-            this.columnAutoMinPitch.HeaderText = "Auto MinPitch";
-            this.columnAutoMinPitch.Name = "columnAutoMinPitch";
-            this.columnAutoMinPitch.Width = 60;
-            // 
-            // columnRecommendedMinPitch
-            // 
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.columnRecommendedMinPitch.DefaultCellStyle = dataGridViewCellStyle3;
-            this.columnRecommendedMinPitch.HeaderText = "Recommended MinPitch";
-            this.columnRecommendedMinPitch.Name = "columnRecommendedMinPitch";
-            this.columnRecommendedMinPitch.ReadOnly = true;
-            this.columnRecommendedMinPitch.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.columnRecommendedMinPitch.Width = 95;
-            // 
-            // columnCurrentVolume
-            // 
-            this.columnCurrentVolume.HeaderText = "Current Volume";
-            this.columnCurrentVolume.Name = "columnCurrentVolume";
-            this.columnCurrentVolume.ReadOnly = true;
-            this.columnCurrentVolume.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.columnCurrentVolume.Width = 60;
+            dataGridViewWavs.AllowUserToAddRows = false;
+            dataGridViewWavs.AllowUserToDeleteRows = false;
+            dataGridViewWavs.AllowUserToResizeColumns = false;
+            dataGridViewWavs.AllowUserToResizeRows = false;
+            dataGridViewWavs.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dataGridViewWavs.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewWavs.Columns.AddRange(new DataGridViewColumn[] { columnWav, columnEnabled, columnExtendedRange, columnAutoMinPitch, columnRecommendedMinPitch, columnCurrentVolume });
+            dataGridViewWavs.Location = new Point(12, 41);
+            dataGridViewWavs.Name = "dataGridViewWavs";
+            dataGridViewWavs.RowHeadersVisible = false;
+            dataGridViewWavs.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dataGridViewWavs.RowTemplate.Height = 25;
+            dataGridViewWavs.ScrollBars = ScrollBars.Vertical;
+            dataGridViewWavs.Size = new Size(965, 152);
+            dataGridViewWavs.TabIndex = 8;
+            dataGridViewWavs.CellDoubleClick += dataGridViewWavs_CellDoubleClick;
+            dataGridViewWavs.CellStateChanged += dataGridViewWavs_CellStateChanged;
+            dataGridViewWavs.CellValueChanged += dataGridViewWavs_CellValueChanged;
+            dataGridViewWavs.ColumnHeaderMouseClick += dataGridViewWavs_ColumnHeaderMouseClick;
+            dataGridViewWavs.CurrentCellDirtyStateChanged += dataGridViewWavs_CurrentCellDirtyStateChanged;
             // 
             // plotViewWave
             // 
-            this.plotViewWave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.plotViewWave.BackColor = System.Drawing.Color.Black;
-            this.plotViewWave.Location = new System.Drawing.Point(832, 377);
-            this.plotViewWave.Name = "plotViewWave";
-            this.plotViewWave.PanCursor = System.Windows.Forms.Cursors.Hand;
-            this.plotViewWave.Size = new System.Drawing.Size(268, 208);
-            this.plotViewWave.TabIndex = 9;
-            this.plotViewWave.Text = "plotViewWave";
-            this.plotViewWave.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
-            this.plotViewWave.ZoomRectangleCursor = System.Windows.Forms.Cursors.SizeNWSE;
-            this.plotViewWave.ZoomVerticalCursor = System.Windows.Forms.Cursors.SizeNS;
+            plotViewWave.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            plotViewWave.BackColor = Color.Black;
+            plotViewWave.Location = new Point(832, 377);
+            plotViewWave.Name = "plotViewWave";
+            plotViewWave.PanCursor = Cursors.Hand;
+            plotViewWave.Size = new Size(268, 208);
+            plotViewWave.TabIndex = 9;
+            plotViewWave.Text = "plotViewWave";
+            plotViewWave.ZoomHorizontalCursor = Cursors.SizeWE;
+            plotViewWave.ZoomRectangleCursor = Cursors.SizeNWSE;
+            plotViewWave.ZoomVerticalCursor = Cursors.SizeNS;
             // 
             // buttonDisableAll
             // 
-            this.buttonDisableAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonDisableAll.Location = new System.Drawing.Point(983, 70);
-            this.buttonDisableAll.Name = "buttonDisableAll";
-            this.buttonDisableAll.Size = new System.Drawing.Size(129, 23);
-            this.buttonDisableAll.TabIndex = 10;
-            this.buttonDisableAll.Text = "Disable All";
-            this.buttonDisableAll.UseVisualStyleBackColor = true;
-            this.buttonDisableAll.Click += new System.EventHandler(this.buttonDisableAll_Click);
+            buttonDisableAll.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            buttonDisableAll.Location = new Point(983, 70);
+            buttonDisableAll.Name = "buttonDisableAll";
+            buttonDisableAll.Size = new Size(129, 23);
+            buttonDisableAll.TabIndex = 10;
+            buttonDisableAll.Text = "Disable All";
+            buttonDisableAll.UseVisualStyleBackColor = true;
+            buttonDisableAll.Click += buttonDisableAll_Click;
             // 
             // buttonEnableAll
             // 
-            this.buttonEnableAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonEnableAll.Location = new System.Drawing.Point(983, 41);
-            this.buttonEnableAll.Name = "buttonEnableAll";
-            this.buttonEnableAll.Size = new System.Drawing.Size(129, 23);
-            this.buttonEnableAll.TabIndex = 11;
-            this.buttonEnableAll.Text = "Enable All";
-            this.buttonEnableAll.UseVisualStyleBackColor = true;
-            this.buttonEnableAll.Click += new System.EventHandler(this.buttonEnableAll_Click);
+            buttonEnableAll.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            buttonEnableAll.Location = new Point(983, 41);
+            buttonEnableAll.Name = "buttonEnableAll";
+            buttonEnableAll.Size = new Size(129, 23);
+            buttonEnableAll.TabIndex = 11;
+            buttonEnableAll.Text = "Enable All";
+            buttonEnableAll.UseVisualStyleBackColor = true;
+            buttonEnableAll.Click += buttonEnableAll_Click;
             // 
             // textBoxRMS
             // 
-            this.textBoxRMS.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxRMS.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.textBoxRMS.Location = new System.Drawing.Point(872, 348);
-            this.textBoxRMS.Name = "textBoxRMS";
-            this.textBoxRMS.Size = new System.Drawing.Size(58, 23);
-            this.textBoxRMS.TabIndex = 12;
-            this.textBoxRMS.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            textBoxRMS.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            textBoxRMS.BackColor = SystemColors.ControlLight;
+            textBoxRMS.Location = new Point(872, 348);
+            textBoxRMS.Name = "textBoxRMS";
+            textBoxRMS.Size = new Size(58, 23);
+            textBoxRMS.TabIndex = 12;
+            textBoxRMS.TextAlign = HorizontalAlignment.Right;
             // 
             // label4
             // 
-            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(832, 351);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(34, 15);
-            this.label4.TabIndex = 13;
-            this.label4.Text = "RMS:";
+            label4.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            label4.AutoSize = true;
+            label4.Location = new Point(832, 351);
+            label4.Name = "label4";
+            label4.Size = new Size(34, 15);
+            label4.TabIndex = 13;
+            label4.Text = "RMS:";
             // 
             // label5
             // 
-            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(16, 351);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(43, 15);
-            this.label5.TabIndex = 14;
-            this.label5.Text = "Stroke:";
+            label5.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            label5.AutoSize = true;
+            label5.Location = new Point(16, 351);
+            label5.Name = "label5";
+            label5.Size = new Size(43, 15);
+            label5.TabIndex = 14;
+            label5.Text = "Stroke:";
             // 
             // comboBoxStroke
             // 
-            this.comboBoxStroke.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.comboBoxStroke.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxStroke.FormattingEnabled = true;
-            this.comboBoxStroke.Items.AddRange(new object[] {
-            "2",
-            "4"});
-            this.comboBoxStroke.Location = new System.Drawing.Point(65, 348);
-            this.comboBoxStroke.Name = "comboBoxStroke";
-            this.comboBoxStroke.Size = new System.Drawing.Size(54, 23);
-            this.comboBoxStroke.TabIndex = 15;
-            this.comboBoxStroke.SelectedIndexChanged += new System.EventHandler(this.comboBoxStroke_SelectedIndexChanged);
+            comboBoxStroke.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            comboBoxStroke.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxStroke.FormattingEnabled = true;
+            comboBoxStroke.Items.AddRange(new object[] { "2", "4" });
+            comboBoxStroke.Location = new Point(65, 348);
+            comboBoxStroke.Name = "comboBoxStroke";
+            comboBoxStroke.Size = new Size(54, 23);
+            comboBoxStroke.TabIndex = 15;
+            comboBoxStroke.SelectedIndexChanged += comboBoxStroke_SelectedIndexChanged;
             // 
             // label6
             // 
-            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(139, 351);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(59, 15);
-            this.label6.TabIndex = 16;
-            this.label6.Text = "Cylinders:";
+            label6.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            label6.AutoSize = true;
+            label6.Location = new Point(139, 351);
+            label6.Name = "label6";
+            label6.Size = new Size(59, 15);
+            label6.TabIndex = 16;
+            label6.Text = "Cylinders:";
             // 
             // comboBoxCylinders
             // 
-            this.comboBoxCylinders.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.comboBoxCylinders.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxCylinders.FormattingEnabled = true;
-            this.comboBoxCylinders.Items.AddRange(new object[] {
-            "1",
-            "2",
-            "3",
-            "4",
-            "6"});
-            this.comboBoxCylinders.Location = new System.Drawing.Point(204, 348);
-            this.comboBoxCylinders.Name = "comboBoxCylinders";
-            this.comboBoxCylinders.Size = new System.Drawing.Size(61, 23);
-            this.comboBoxCylinders.TabIndex = 17;
-            this.comboBoxCylinders.SelectedIndexChanged += new System.EventHandler(this.comboBoxCylinders_SelectedIndexChanged);
+            comboBoxCylinders.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            comboBoxCylinders.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxCylinders.FormattingEnabled = true;
+            comboBoxCylinders.Items.AddRange(new object[] { "1", "2", "3", "4", "6" });
+            comboBoxCylinders.Location = new Point(204, 348);
+            comboBoxCylinders.Name = "comboBoxCylinders";
+            comboBoxCylinders.Size = new Size(61, 23);
+            comboBoxCylinders.TabIndex = 17;
+            comboBoxCylinders.SelectedIndexChanged += comboBoxCylinders_SelectedIndexChanged;
             // 
             // buttonAutoMinPitchEnable
             // 
-            this.buttonAutoMinPitchEnable.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonAutoMinPitchEnable.Location = new System.Drawing.Point(983, 99);
-            this.buttonAutoMinPitchEnable.Name = "buttonAutoMinPitchEnable";
-            this.buttonAutoMinPitchEnable.Size = new System.Drawing.Size(129, 23);
-            this.buttonAutoMinPitchEnable.TabIndex = 18;
-            this.buttonAutoMinPitchEnable.Text = "Auto MinPitch All";
-            this.buttonAutoMinPitchEnable.UseVisualStyleBackColor = true;
-            this.buttonAutoMinPitchEnable.Click += new System.EventHandler(this.buttonAutoMinPitchEnable_Click);
+            buttonAutoMinPitchEnable.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            buttonAutoMinPitchEnable.Location = new Point(983, 99);
+            buttonAutoMinPitchEnable.Name = "buttonAutoMinPitchEnable";
+            buttonAutoMinPitchEnable.Size = new Size(129, 23);
+            buttonAutoMinPitchEnable.TabIndex = 18;
+            buttonAutoMinPitchEnable.Text = "Auto MinPitch All";
+            buttonAutoMinPitchEnable.UseVisualStyleBackColor = true;
+            buttonAutoMinPitchEnable.Click += buttonAutoMinPitchEnable_Click;
             // 
             // buttonAutoMinPitchDisable
             // 
-            this.buttonAutoMinPitchDisable.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonAutoMinPitchDisable.Location = new System.Drawing.Point(983, 128);
-            this.buttonAutoMinPitchDisable.Name = "buttonAutoMinPitchDisable";
-            this.buttonAutoMinPitchDisable.Size = new System.Drawing.Size(129, 23);
-            this.buttonAutoMinPitchDisable.TabIndex = 19;
-            this.buttonAutoMinPitchDisable.Text = "Auto MinPitch None";
-            this.buttonAutoMinPitchDisable.UseVisualStyleBackColor = true;
-            this.buttonAutoMinPitchDisable.Click += new System.EventHandler(this.buttonAutoMinPitchDisable_Click);
+            buttonAutoMinPitchDisable.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            buttonAutoMinPitchDisable.Location = new Point(983, 128);
+            buttonAutoMinPitchDisable.Name = "buttonAutoMinPitchDisable";
+            buttonAutoMinPitchDisable.Size = new Size(129, 23);
+            buttonAutoMinPitchDisable.TabIndex = 19;
+            buttonAutoMinPitchDisable.Text = "Auto MinPitch None";
+            buttonAutoMinPitchDisable.UseVisualStyleBackColor = true;
+            buttonAutoMinPitchDisable.Click += buttonAutoMinPitchDisable_Click;
+            // 
+            // buttonEditEnvelopes
+            // 
+            buttonEditEnvelopes.Location = new Point(103, 12);
+            buttonEditEnvelopes.Name = "buttonEditEnvelopes";
+            buttonEditEnvelopes.Size = new Size(95, 23);
+            buttonEditEnvelopes.TabIndex = 20;
+            buttonEditEnvelopes.Text = "Edit Envelopes";
+            buttonEditEnvelopes.UseVisualStyleBackColor = true;
+            buttonEditEnvelopes.Click += buttonEditEnvelopes_Click;
+            // 
+            // columnWav
+            // 
+            columnWav.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            columnWav.HeaderText = "Wav";
+            columnWav.Name = "columnWav";
+            columnWav.ReadOnly = true;
+            columnWav.SortMode = DataGridViewColumnSortMode.NotSortable;
+            // 
+            // columnEnabled
+            // 
+            columnEnabled.HeaderText = "Enabled";
+            columnEnabled.Name = "columnEnabled";
+            columnEnabled.Width = 60;
+            // 
+            // columnExtendedRange
+            // 
+            columnExtendedRange.HeaderText = "Extended Range";
+            columnExtendedRange.Name = "columnExtendedRange";
+            columnExtendedRange.Width = 60;
+            // 
+            // columnAutoMinPitch
+            // 
+            columnAutoMinPitch.HeaderText = "Auto MinPitch";
+            columnAutoMinPitch.Name = "columnAutoMinPitch";
+            columnAutoMinPitch.Width = 60;
+            // 
+            // columnRecommendedMinPitch
+            // 
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleRight;
+            columnRecommendedMinPitch.DefaultCellStyle = dataGridViewCellStyle1;
+            columnRecommendedMinPitch.HeaderText = "Recommended MinPitch";
+            columnRecommendedMinPitch.Name = "columnRecommendedMinPitch";
+            columnRecommendedMinPitch.ReadOnly = true;
+            columnRecommendedMinPitch.SortMode = DataGridViewColumnSortMode.NotSortable;
+            columnRecommendedMinPitch.Width = 95;
+            // 
+            // columnCurrentVolume
+            // 
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleRight;
+            columnCurrentVolume.DefaultCellStyle = dataGridViewCellStyle2;
+            columnCurrentVolume.HeaderText = "Current Volume";
+            columnCurrentVolume.Name = "columnCurrentVolume";
+            columnCurrentVolume.ReadOnly = true;
+            columnCurrentVolume.SortMode = DataGridViewColumnSortMode.NotSortable;
+            columnCurrentVolume.Width = 60;
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1124, 620);
-            this.Controls.Add(this.buttonAutoMinPitchDisable);
-            this.Controls.Add(this.buttonAutoMinPitchEnable);
-            this.Controls.Add(this.comboBoxCylinders);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.comboBoxStroke);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.textBoxRMS);
-            this.Controls.Add(this.buttonEnableAll);
-            this.Controls.Add(this.buttonDisableAll);
-            this.Controls.Add(this.plotViewWave);
-            this.Controls.Add(this.dataGridViewWavs);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.trackBarOverallVolume);
-            this.Controls.Add(this.plotViewFFT);
-            this.Controls.Add(this.tabControlControl);
-            this.Controls.Add(this.buttonLiveEdit);
-            this.Name = "MainForm";
-            this.Text = "Pibstermatic Sound 2000";
-            this.tabControlControl.ResumeLayout(false);
-            this.tabPageRaw.ResumeLayout(false);
-            this.tabPageRaw.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBarOn)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBarRPM)).EndInit();
-            this.tabPageSim.ResumeLayout(false);
-            this.tabPageSim.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBarGearing)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBarThrottle)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBarOverallVolume)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewWavs)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1124, 620);
+            Controls.Add(buttonEditEnvelopes);
+            Controls.Add(buttonAutoMinPitchDisable);
+            Controls.Add(buttonAutoMinPitchEnable);
+            Controls.Add(comboBoxCylinders);
+            Controls.Add(label6);
+            Controls.Add(comboBoxStroke);
+            Controls.Add(label5);
+            Controls.Add(label4);
+            Controls.Add(textBoxRMS);
+            Controls.Add(buttonEnableAll);
+            Controls.Add(buttonDisableAll);
+            Controls.Add(plotViewWave);
+            Controls.Add(dataGridViewWavs);
+            Controls.Add(label3);
+            Controls.Add(trackBarOverallVolume);
+            Controls.Add(plotViewFFT);
+            Controls.Add(tabControlControl);
+            Controls.Add(buttonLiveEdit);
+            Name = "MainForm";
+            Text = "Pibstermatic Sound 2000";
+            tabControlControl.ResumeLayout(false);
+            tabPageRaw.ResumeLayout(false);
+            tabPageRaw.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)trackBarOn).EndInit();
+            ((System.ComponentModel.ISupportInitialize)trackBarRPM).EndInit();
+            tabPageSim.ResumeLayout(false);
+            tabPageSim.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)trackBarGearing).EndInit();
+            ((System.ComponentModel.ISupportInitialize)trackBarThrottle).EndInit();
+            ((System.ComponentModel.ISupportInitialize)trackBarOverallVolume).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewWavs).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -623,12 +617,6 @@
         private Button buttonEnableAll;
         private TextBox textBoxRMS;
         private Label label4;
-        private DataGridViewTextBoxColumn columnWav;
-        private DataGridViewCheckBoxColumn columnEnabled;
-        private DataGridViewCheckBoxColumn columnExtendedRange;
-        private DataGridViewCheckBoxColumn columnAutoMinPitch;
-        private DataGridViewTextBoxColumn columnRecommendedMinPitch;
-        private DataGridViewTextBoxColumn columnCurrentVolume;
         private Label label5;
         private ComboBox comboBoxStroke;
         private Label label6;
@@ -648,5 +636,12 @@
         private Label label12;
         private CheckBox checkBoxClutch;
         private Button buttonBrake;
+        private Button buttonEditEnvelopes;
+        private DataGridViewTextBoxColumn columnWav;
+        private DataGridViewCheckBoxColumn columnEnabled;
+        private DataGridViewCheckBoxColumn columnExtendedRange;
+        private DataGridViewCheckBoxColumn columnAutoMinPitch;
+        private DataGridViewTextBoxColumn columnRecommendedMinPitch;
+        private DataGridViewTextBoxColumn columnCurrentVolume;
     }
 }

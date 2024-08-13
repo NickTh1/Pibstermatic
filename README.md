@@ -7,20 +7,19 @@ Either launch the executable without arguments, then select an engine file (engi
 command line argument being the full path of the engine file.
 
 1) Select 'Stroke' and 'Cylinders'.
-2) Click 'Auto MinPitch All'.
-3) Click 'Disable All'.
-4) Click 'Live Edit'.
-5) Click 'Extended Range' for a sample.
-6) Pull the RPM slider and try to find a value where you see clear peaks in the FFT view.
-7) Try to identify which peak is which - combustion, cycle etc. (See explanation below).
-8) Tune MaxPitch for the sample in the live edit view so that the vertical lines in the plot coincide with the peaks.
-9) Copy 'Suggested MinPitch' from the table.
-10) Uncheck 'Extended Range'
-11) Pick another sample and goto 5.
-12) Click 'Enable All'.
-13) Pull the RPM and On slider and hopefully observe no pitch shifts between samples.
-14) Look at RMS when varying RPM and On. Probably, the value should never go down with increasing RPM, or when On is enabled.
-15) Save in the live edit view.
+2) Click 'Disable All'.
+3) Click 'Edit Envelopes'.
+4) Select a sample in the envelope editor.
+5) Select 'Proportional to RPM'.
+6) On the main form, click 'Extended Range' for the selected sample
+7) Pull the RPM slider and try to find a value where you see clear peaks in the FFT view.
+8) Tune Reference RPM for the sample so that the vertical lines in the plot coincide with the peaks.
+9) Uncheck 'Extended Range'
+10) Pick another sample and goto 5.
+11) Click 'Enable All'.
+12) Pull the RPM and On slider and hopefully observe no pitch shifts between samples.
+13) Look at RMS when varying RPM and On. Probably, the value should never go down with increasing RPM, or when On is enabled.
+14) Save in the live edit view.
 
 ***Peaks****
 

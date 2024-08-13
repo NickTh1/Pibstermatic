@@ -7,7 +7,7 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
     <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
-    <AssemblyName>Pibstermatic</AssemblyName>
+    <AssemblyName>WaveMix</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

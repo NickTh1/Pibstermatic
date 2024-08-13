@@ -17,6 +17,8 @@ namespace WaveMix
 
     struct SEngineState
     {
+        public SEngineState() { }
+
         public float m_RPM = 1000;
 
         public float m_On = 0;
@@ -49,6 +51,7 @@ namespace WaveMix
         public class Sample
         {
             public int m_IndexLayer;
+            public int m_IndexSampleInLayer;
             public string m_WavName = "";
             public float m_MinPitch = 0;
             public float m_MaxPitch = 1;
@@ -163,17 +166,8 @@ namespace WaveMix
             return -1;
         }
 
-        public void UpdateEngineProperties(string engine_props_text)
+        public void UpdateEngineProperties(StructuredProperties struct_props)
         {
-            StructuredProperties struct_props;
-            try
-            {
-                struct_props = PropsFileReader.ParsePropsFile(engine_props_text);
-            } catch(Exception)
-            {
-                return;
-            }
-
             m_MaxRPM = struct_props.GetFloat("MaxValue");
             m_AutoTune = struct_props.GetInteger("AutoTune", 0);
 
@@ -202,6 +196,7 @@ namespace WaveMix
                         }
 
                         sample.m_IndexLayer = index_layer;
+                        sample.m_IndexSampleInLayer = j;
                         sample.m_WavName = wav_name;
                         sample.m_Type = ParseSampleType(index_layer, wav_name);
                         sample.m_MinPitch = src_sample.GetFloat("MinPitch");
@@ -233,6 +228,19 @@ namespace WaveMix
             m_Samples = samples;
             m_SampleStates = sample_states;
         }
+
+        public void UpdateEngineProperties(string engine_props_text)
+        {
+            try
+            {
+                StructuredProperties struct_props = PropsFile.ParsePropsFile(engine_props_text);
+                UpdateEngineProperties(struct_props);
+            }
+            catch (Exception)
+            {
+            }
+        }
+
 
         float EvaluateEngineState(int index_sample, in SEngineState engine_state)
         {

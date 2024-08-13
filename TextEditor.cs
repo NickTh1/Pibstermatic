@@ -4,14 +4,95 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace WaveMix
 {
+    class TextPosition
+    {
+        public int m_Line;
+        public int m_Column;
+
+        public TextPosition(int line, int column)
+        {
+            m_Line = line;
+            m_Column = column;
+        }
+    }
+
+    class TextBoxUtils
+    {
+        const int EM_LINESCROLL = 0x00B6;
+
+        [DllImport("user32.dll")]
+        static extern int SetScrollPos(IntPtr hWnd, int nBar, int nPos, bool bRedraw);
+        [DllImport("user32.dll")]
+        static extern int SendMessage(IntPtr hWnd, int wMsg, int wParam, int lParam);
+
+        [DllImport("user32.dll")]
+        static extern int GetScrollPos(IntPtr hWnd, int nBar);
+
+        public static TextPosition DetermineTextPosition(string text, int caret_position)
+        {
+            int line = 0;
+            int column = 0;
+            for(int i = 0; i < caret_position; i++)
+            {
+                char ch = text[i];
+                if (ch == '\r')
+                {
+                    line++;
+                    column = 0;
+                }
+                else
+                    column++;
+            }
+            return new TextPosition(line, column);
+        }
+
+        public static int DetermineCaretPosition(string text, TextPosition text_position)
+        {
+            int len = text.Length;
+            int line = 0;
+            int column = 0;
+            for (int i = 0; i < len; i++)
+            {
+                if (line == text_position.m_Line && column >= text_position.m_Column)
+                    return i;
+                char ch = text[i];
+                if (ch == '\r')
+                {
+                    if (line == text_position.m_Line)
+                        return i;
+                    line++;
+                    column = 0;
+                }
+                else
+                    column++;
+            }
+            return text.Length;
+        }
+
+        public static void SetScrollPos(System.Windows.Forms.TextBox textbox, int scroll_pos)
+        {
+            int curr_pos = GetScrollPos(textbox);
+            SetScrollPos(textbox.Handle, 1, scroll_pos, true);
+            SendMessage(textbox.Handle, EM_LINESCROLL, 0, scroll_pos - curr_pos);
+        }
+
+        public static int GetScrollPos(System.Windows.Forms.TextBox textbox)
+        {
+            return GetScrollPos(textbox.Handle, 1);
+        }
+    }
+
     public partial class TextEditor : Form
     {
+
         string m_EnginePath;
 
         public event EventHandler? OnEditorTextChanged;
@@ -34,7 +115,15 @@ namespace WaveMix
             set {
                 if (value.Equals(textBox))
                     return;
-                textBox.Text = value; 
+
+                TextPosition pos_before = TextBoxUtils.DetermineTextPosition(textBox.Text, textBox.SelectionStart);
+                int scrollpos_before = TextBoxUtils.GetScrollPos(textBox);
+
+                textBox.Text = value;
+
+                int sel_after = TextBoxUtils.DetermineCaretPosition(value, pos_before);
+                textBox.Select(sel_after, 0);
+                TextBoxUtils.SetScrollPos(textBox, scrollpos_before);
             }
         }
 

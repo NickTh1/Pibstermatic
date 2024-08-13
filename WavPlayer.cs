@@ -36,12 +36,16 @@ namespace WaveMix
 
         private struct SWavPlaybackParams
         {
+            public SWavPlaybackParams() { }
+
             public float m_Amplitude = 0;
             public float m_Frequency = 44100;
         }
 
         private struct SScape
         {
+            public SScape() { }
+
             public SWavPlaybackParams[] m_WavPlaybackParams = new SWavPlaybackParams[0];
         }
 
@@ -122,6 +126,8 @@ namespace WaveMix
             }
 
             int index;
+            WavFileData wav_file_data = Utils.ReadWavFile(filepath);
+            /*
             using (WaveFileReader reader = new WaveFileReader(filepath))
             {
                 long sample_count = reader.SampleCount;
@@ -166,6 +172,37 @@ namespace WaveMix
                     m_QueuedScapes.Clear();       // Wrong size, so just clear.
                 }
             }
+            */
+
+            lock (m_Mutex)
+            {
+                Wav wav = new Wav();
+                WavState wav_state = new WavState();
+                SWavPlaybackParams wav_playback_params = new SWavPlaybackParams();
+                wav_state.m_Position = 0;
+
+                wav.m_Path = filepath;
+                wav.m_IndexLayer = index_layer;
+                wav.m_SampleRate = wav_file_data.m_SampleRate;
+                wav.m_Data = wav_file_data.m_Data;
+
+                wav_playback_params.m_Amplitude = 0;
+                wav_playback_params.m_Frequency = wav_file_data.m_SampleRate;
+
+                index = m_Wavs.Count;
+                m_Wavs.Add(wav);
+                m_WavStates.Add(wav_state);
+
+                SWavPlaybackParams[] new_params = new SWavPlaybackParams[index + 1];
+                Array.Copy(m_PendingScape.m_WavPlaybackParams, new_params, m_PendingScape.m_WavPlaybackParams.Length);
+                new_params[index] = wav_playback_params;
+                m_PendingScape.m_WavPlaybackParams = new_params;
+
+                m_TmpInterpolatedWavs.Add(new InterpolatedWav());
+
+                m_QueuedScapes.Clear();       // Wrong size, so just clear.
+            }
+
             return index;
         }
 
