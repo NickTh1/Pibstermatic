@@ -25,6 +25,7 @@ namespace WaveMix
     {
         static float SnapRadius = 10.0f;
         static readonly float c_SliderQuantScale = 1e6f;
+        static readonly int MaxNumPointsPerSample = 8;
 
         enum EPitchMode
         {
@@ -202,11 +203,15 @@ namespace WaveMix
                     sample.m_Points.RemoveAt(index_point);
                     UpdatePlot();
                     UpdateSample();
+                    UpdateProps();
                 }));
             }
             else
             {
-                m_ContextMenuStrip.Items.Add(CreateContextMenuItem("Add", (o, e) =>
+                if (sample.m_Points.Count >= MaxNumPointsPerSample)
+                    m_ContextMenuStrip.Items.Add("No more add buttons for you, sir");
+                else
+                    m_ContextMenuStrip.Items.Add(CreateContextMenuItem("Add", (o, e) =>
                 {
                     float rpm = (float)m_PlotModel.Axes[0].InverseTransform(mouse_event_args.X);
                     float volume = (float)m_PlotModel.Axes[1].InverseTransform(mouse_event_args.Y);
@@ -226,6 +231,7 @@ namespace WaveMix
 
                     UpdatePlot();
                     UpdateSample();
+                    UpdateProps();
                 }));
             }
 
@@ -441,6 +447,45 @@ namespace WaveMix
                 handler(this, EventArgs.Empty);
         }
 
+        static void SortProps(StructuredProperties props, Func<string, string, int> predicate )
+        {
+            int num_props = props.Count;
+            for( int i = 1; i < num_props; i++)
+            {
+                string key_i = props.GetKeyedValue(i).m_Key;
+                for(int j = i; --j >= 0;)
+                {
+                    string key_j = props.GetKeyedValue(j).m_Key;
+                    if (predicate(key_j, key_i) >= 0)
+                        break;
+                    props.SwapEntries(key_i, key_j, false);
+                }
+            }
+        }
+
+        static int SampleKeyOrder(string key)
+        {
+            try
+            {
+                if (key.StartsWith("Point"))
+                    return 1000 + int.Parse(key.Substring(5));  // 5 = length("Point")
+                if (key.Equals("NumPoints"))
+                    return 100;
+                return 0;
+            }
+            catch (Exception)
+            {
+                return 1;
+            }
+        }
+
+        static int SampleKeyCompare(string key1, string key2)
+        {
+            int op1 = SampleKeyOrder(key1);
+            int op2 = SampleKeyOrder(key2);
+            return op2 - op1;
+        }
+
         void UpdateProps()
         {
             for (int index_layer = 0; index_layer < 2; index_layer++)
@@ -487,6 +532,8 @@ namespace WaveMix
                         pt_props.SetFloat("Value", pt.m_RPM / m_MaxRPM);
                         pt_props.SetFloat("Volume", pt.m_Volume);
                     }
+
+                    SortProps(sample_props, SampleKeyCompare);
                 }
             }
             RaiseOnPropertyChanged();
